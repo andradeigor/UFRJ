@@ -1,0 +1,16 @@
+
+Considerando a=1, b=2, c=3, d=4, e=5 compute as expressões abaixo.
+
+a * b / c = 0
+a * b % c + 1 = 4
+++ a * b - c --  = 2 a=2 c=2
+7 - - b * ++ d= 17
+a / b / c = 0
+7 + c * -- d / e = 8
+2 * a % - b + c + 1 = 4
+39 / - ++ e - + 29 % c = -15
+
+i += j + k i = 6
+j *= k = m + 5; k = 9;j = 18
+i += j += k += 1 + 2; k = 13; j = 31; i=37
+7 - + ++ a % (3+b)
