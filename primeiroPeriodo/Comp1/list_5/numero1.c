@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #define DIM 21
 
 int main(void){
@@ -10,19 +9,28 @@ int main(void){
     caractere;
 
     int i,
-    opcao, 
-    posicao,
-    size;
+    opcao, posicao,
+    size1=0,size2=0;
 
     printf("Por favor, digite uma string de até 20 caracteres: ");
     fgets(string1, DIM, stdin);
     for(i=0; i<DIM; i++){
-        if(string1[i] == '\n') string1[i] = '\0';
+        size1 += 1;
+        if(string1[i] == '\n' ||string1[i] == '\0') {
+            size1 -= 1; //off by one por causa do \0 ser contado como "tamanho", esse -1 arruma isso
+            string1[i] = '\0';
+            break;
+            }
     }
     printf("Por favor, digite uma segunda string de até 20 caracteres: ");
     fgets(string2, DIM, stdin);
     for(i=0; i<DIM; i++){
-        if(string2[i] == '\n') string2[i] = '\0';
+        size2 += 1;
+        if(string2[i] == '\n' ||string2[i] == '\0') {
+            size2 -=1 ;//off by one por causa do \0 ser contado como "tamanho", esse -1 arruma isso
+            string2[i] = '\0';
+            break;
+        }
     }
     printf("Por favor, digite a opção desejada:\n");
     printf("1. Mostre as strings invertidas;\n");
@@ -30,60 +38,73 @@ int main(void){
     printf("3. Compare as duas strings e informe quem é a string maior;\n");
     printf("4. Informe a string de maior tamanho;\n");
     printf("5. Identifique a ocorrência de determinado caractere na string e informa sua posicao;\n");
-    scanf("%d", &opcao);
-    while((getchar())!='\n');
+    while(1){
+        scanf("%d", &opcao);
+        while((getchar())!='\n');
+        if(opcao >=1 && opcao<=5){
+            break;
+        }    
+    }
     switch (opcao)
     {
     case 1:
-        for(i=0;i<(strlen(string1)/2); i++){
+        for(i=0;i<(size1/2); i++){
             aux = string1[i];
-            string1[i] = string1[strlen(string1) -i-1];
-            string1[strlen(string1) -i-1] = aux;
+            string1[i] = string1[size1 -i-1];
+            string1[size1 -i-1] = aux;
         }
-        for(i=0;i<(strlen(string2)/2); i++){
+        for(i=0;i<(size2/2); i++){
             aux = string2[i];
-            string2[i] = string2[strlen(string2) -i-1];
-            string2[strlen(string2) -i-1] = aux;
+            string2[i] = string2[size2 -i-1];
+            string2[size2 -i-1] = aux;
         }
         printf("A primeira string invertida fica: %s\n", string1);
         printf("A primeira string invertida fica: %s\n", string2);
         break;
     case 2:
-        strcpy(string3, string1);
-        strcat(string3, string2);
+        for(i=0; i<size1; i++){
+            string3[i] = string1[i];
+        }
+        for(i=size1; i<(size2+size1); i++){
+            string3[i] = string2[ i-size1];
+        }
+        string3[size2+size1] = '\0';
         printf("As string concatenadas gerou: %s\n", string3);
+        break;
     case 3:
-        if(strlen(string1)>strlen(string2)){
+        if(size1>size2){
             printf("Primeira string\n");
         }
-        else if(strlen(string1) < strlen(string2)){
+        else if(size1 < size2){
             printf("Segunda string\n");
         }else{
             printf("Mesmo tamanho\n");
         }
+        break;
     case 4:
-        if(strlen(string1)>strlen(string2)){
+        if(size1>size2){
             printf("%s\n", string1);
         }
-        else if(strlen(string1) < strlen(string2)){
+        else if(size1 < size2){
             printf("%s\n", string2);
         }else{
-            printf("Mesmo tamanho\n");
+            printf("Mesmo tamanho string1: %s string2: %s\n", string1,string2);
         }
+        break;
     case 5:
 
         printf("Por favor, digite o caractere que deseja procurar: ");
         caractere = getchar();
         while((getchar())!='\n');
         printf("%c\n", caractere);
-        for(i=0;i<strlen(string1);i++){
+        for(i=0;i<size1;i++){
             if(string1[i] ==caractere){
                 posicao = i;
                 printf("o caractere procurado está na posicao %d da primeira string\n", posicao);
                 break;
             } 
         }
-        for(i=0;i<strlen(string2);i++){
+        for(i=0;i<size2;i++){
             if(string2[i] ==caractere){
                 posicao = i;
                 printf("o caractere procurado está na posicao %d da segunda string\n", posicao);
