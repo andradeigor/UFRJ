@@ -5,8 +5,8 @@ int main(void){
     y[DIM],soma[DIM],
     produto[DIM],diferenca[DIM],
     diferencaIndex=0,intersecao[DIM], 
-    intersecaoIndex=0,uniao[DIM*2],
-    existX,existY,indexUniao=DIM;
+    intersecaoIndex=0,uniao[DIM*2],k,existINT=0,existUN=0,
+    existX,existY,indexUniao=0;
     for(i=0;i<DIM;i++){
         printf("Por favor, digite o %dº numero para o vetor x: ", i+1);
         scanf("%d", &x[i]);
@@ -16,7 +16,14 @@ int main(void){
         while((getchar())!='\n');
         soma[i] = x[i] + y[i];
         produto[i] = x[i] * y[i];
-        uniao[i] = x[i];    
+        for(k=0;k<i;k++){
+            if(uniao[k]==x[i]) existUN=1;
+        }
+        if(!existUN){
+            uniao[indexUniao] = x[i];
+            indexUniao+=1;
+        }
+        existUN=0;
     }
     printf("==========================\n");
     for (i=0;i<DIM;i++){
@@ -28,9 +35,17 @@ int main(void){
         existY=0;
         for (j=0;j<DIM;j++){
             if(x[i] == y[j] ){
+                for(k=0;k<intersecaoIndex;k++){
+                    if(x[i] == intersecao[k]) {
+                        existINT=1;
+                    }
+                }
+                if(!existINT){
                 intersecao[intersecaoIndex] = x[i];
                 intersecaoIndex +=1;
+                }
                 existX=1;
+                existINT=0;
             }
             if(y[i] ==x[j]){
                 existY =1;
