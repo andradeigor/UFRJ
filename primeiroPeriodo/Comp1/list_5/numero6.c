@@ -48,7 +48,7 @@ int main(void){
         }
     }
     printf("O aluno com matricula %d foi o aluno que teve a maior nota!!!\n", matriculaMaiorNota);
-    printf("A media de notas finais foi %f\n",mediaNotaFinal/DIM1);
+    printf("A media de notas finais foi %1.1f\n",mediaNotaFinal/DIM1);
 
     return 0;
 }
