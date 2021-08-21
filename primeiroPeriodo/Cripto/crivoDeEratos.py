@@ -1,4 +1,5 @@
-
+import time
+start = time.time()
 def aux(n,inicio=2,):
     lista = n
     removed = False
@@ -12,6 +13,7 @@ def aux(n,inicio=2,):
 
 def primos(n):
     numeros = list(range(2,n+1))
-    litadeprimos = aux(numeros)
-    print(litadeprimos)
-primos(30)
+    listadeprimos = aux(numeros)
+    end = time.time()
+    print(end-start)
+primos(10**8)
