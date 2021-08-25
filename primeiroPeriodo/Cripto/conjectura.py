@@ -15,4 +15,4 @@ def conjectura(number, initialNumber):
 try:
     conjectura(int(sys.argv[1]),int(sys.argv[1]) )
 except:
-    print("por favor, digite somente numeros inteiros")
+    print("por favor, digite somente numeros naturais")
