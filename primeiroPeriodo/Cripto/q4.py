@@ -1,10 +1,32 @@
+def altamenteCompostos(numero, dict):
+    for i in range(1,numero):
+        if( dict[numero]<= dict[i]):
+            return False
+    return True
+
 def divisoresPositivos(numero):
     divisores =0
     for num in range(1,numero+1):#começa pelo 1 e vai até numero, +1 por conta do off by one
         if(numero%num==0):
             divisores+=1
-    
     return divisores
 
 
-print(divisoresPositivos(4))
+def aux(n):
+    dicDivisores = {}
+    listaAltamenteCompostos = []
+    for i in range(1,n+1):
+        divisores = divisoresPositivos(i)
+        dicDivisores[i] = divisores
+        AC = altamenteCompostos(i,dicDivisores)
+        if(AC):
+            listaAltamenteCompostos.append(i)
+    print(listaAltamenteCompostos)
+    
+
+def main():
+    numeros = int(input("por favor digita um >>NUMERO NATURAL<<(NAO VOU VALIDAR ISSO): "))
+    aux(numeros)
+
+if __name__ == "__main__":
+    main()
