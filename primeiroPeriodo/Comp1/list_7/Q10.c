@@ -30,7 +30,7 @@ int mergeSort( int *array, int comeco, int fim){
     if(fim-comeco>1){
         meio = (comeco+fim)/2;
         mergeSort(array,comeco,meio);
-        mergeSort(array,meio,fim);
+        mergeSort(array,meio+1,fim);
         merge(array, comeco, meio, fim);
     }
     return 0;

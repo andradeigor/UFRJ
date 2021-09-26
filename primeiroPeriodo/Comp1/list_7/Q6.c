@@ -23,7 +23,8 @@ int main (void) {
     for (i = 0; i < n; i ++) {
         media += pvetor[i];
     }
-    printf ("%f\n", media) ;
+    media/=n;
+    printf ("%1.2f\n", media);
     /* aqui nao preciso mais de pvetor */
     free (pvetor);
     

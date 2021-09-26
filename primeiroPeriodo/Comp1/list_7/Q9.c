@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main(void){
-    int i, n, *pvetor ;
+    int i, n, *pvetor,mMedia=0 ;
     float media;
     /* Define um valor para n , scanf ou n = */
     scanf ("%d", &n);
@@ -11,7 +11,7 @@ int main(void){
     pvetor = (int *) malloc (n*sizeof( int ));
     
     if(!pvetor) {
-        puts("Sem memória.");
+        puts("Sem memoria.");
         return 1;
     }
     /* aqui uso pvetor , vamos ler um vetor */
@@ -19,12 +19,18 @@ int main(void){
         scanf ("%d", pvetor+i);
     }
     /* faco alguma coisa */
+    
     media = 0.0;
-    for (i = 0;i < n;i ++) {
-        media += *(pvetor+i);
-    }
+    for (i = 0;i < n;i ++) media += *(pvetor+i);
+    
     media/=n;
-    printf ("%1.2f\n", media) ;
+    
+    for (i = 0;i< n;i ++){
+        /* verifica se algum dos elementos de pvetor é maior que a média, se for, soma um a variável mMedia*/
+        if (*(pvetor+i)> media) mMedia++;
+    }
+    printf ("a média é: %1.2f\n", media);
+    printf ("O numero de valores maiores que a media e: %d\n", mMedia);
     /* aqui nao preciso mais de pvetor */
     free (pvetor);
     return 0;
