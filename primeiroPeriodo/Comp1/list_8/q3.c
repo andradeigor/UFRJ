@@ -15,8 +15,10 @@ int main(){
     COORD coord1,coord2;
     printf("Por favor, digite a primeira coordenada x,y (ex:1,1): ");
     scanf("%f,%f", &coord1.x,&coord1.y);
+    while(getchar()!='\n');
     printf("Por favor, digite a segunda coordenada x,y (ex:1,1): ");
     scanf("%f,%f", &coord2.x,&coord2.y);
+    while(getchar()!='\n');
     printf("A distância entre %1.1f,%1.1f e %1.1f,%1.1f é %1.2f\n", coord1.x,coord1.y,coord2.x,coord2.y, distancia(coord1.x,coord1.y,coord2.x,coord2.y));
 
     return 0;
