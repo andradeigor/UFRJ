@@ -9,7 +9,7 @@ int comparaTempo(TEMPO t1, TEMPO t2){
     if (t1.hora>t2.hora){
         maior = 1;
     }else if(t1.hora<t2.hora){
-        maior = 2;
+        maior = -1;
     }
     else if(t1.minuto>t2.minuto){
         maior = 1;

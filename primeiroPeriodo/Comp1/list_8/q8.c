@@ -6,14 +6,32 @@ typedef struct _TEMPO {
     int hora , minuto , segundo;
 } TEMPO;
 
-int merge(int *array, int comeco, int meio, int fim){
+int comparaTempo(TEMPO t1, TEMPO t2){
+    int maior=0;
+    if (t1.hora>t2.hora){
+        maior = 1;
+    }else if(t1.hora<t2.hora){
+        maior = -1;
+    }
+    else if(t1.minuto>t2.minuto){
+        maior = 1;
+    }else if(t1.minuto<t2.minuto){
+        maior = -1;
+    }else if(t1.segundo>t2.segundo){
+        maior = 1;
+    }else if(t1.segundo<t2.segundo){
+        maior = -1;
+    }
+    return maior;
+}
+int merge(TEMPO *array, int comeco, int meio, int fim){
     int tamanhoEsquerda,tamanhoDireita,i,topoEsquerda=0,topoDireita=0;
-    int *vetorEsquerda,*vetorDireita;
+    TEMPO *vetorEsquerda,*vetorDireita;
 
     tamanhoEsquerda = meio-comeco+1;
     tamanhoDireita = fim - meio;
-    vetorEsquerda = (int *) malloc (tamanhoEsquerda*sizeof( int ));
-    vetorDireita = (int *) malloc (tamanhoDireita*sizeof( int )); 
+    vetorEsquerda = (TEMPO *) malloc (tamanhoEsquerda*sizeof( TEMPO ));
+    vetorDireita = (TEMPO *) malloc (tamanhoDireita*sizeof( TEMPO )); 
     for(i=0;i<tamanhoEsquerda;i++){
         vetorEsquerda[i] = *(array + comeco + i);
     }
@@ -29,7 +47,7 @@ int merge(int *array, int comeco, int meio, int fim){
             array[i] = vetorEsquerda[topoEsquerda];
             topoEsquerda++;
         }
-        else if(vetorEsquerda[topoEsquerda]< vetorDireita[topoDireita]){
+        else if(comparaTempo(vetorEsquerda[topoEsquerda],vetorDireita[topoDireita]) <0){
             array[i] = vetorEsquerda[topoEsquerda];
             topoEsquerda++;
         }
@@ -43,7 +61,7 @@ int merge(int *array, int comeco, int meio, int fim){
     return 0;
 }
 
-int mergeSort( int *array, int comeco, int fim){
+int mergeSort( TEMPO *array, int comeco, int fim){
     int meio;
     if(comeco<fim){
         meio = (comeco+fim)/2;
@@ -64,10 +82,10 @@ int main(){
         (tempos + i) ->minuto = rand()%60;
         (tempos + i) ->segundo = rand()%60;
     }
+    mergeSort(tempos,0,DIM-1);
     for ( i = 0; i < DIM; i++)
     {
         printf("%i = %d:%d:%d\n", i,(tempos+i)->hora,(tempos+i)->minuto,(tempos+i)->segundo);
     }
-    
     return 0;
 }
