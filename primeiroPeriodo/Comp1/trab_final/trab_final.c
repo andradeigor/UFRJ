@@ -115,7 +115,10 @@ void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
 int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
     PONTOS *ponteiro;
     ponteiro = &matriz[0][0];
-    if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') printf("ISSO NEM EH UMA PECA, MALUCO!\n");;
+    if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') {
+        printf("ISSO NEM EH UMA PECA, MALUCO!\n");
+        return 1;
+    }
     switch(direcao){
         case 2:
             if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
@@ -212,31 +215,64 @@ void moveSelecionado(int *selecionado, int direcao){
         break;
     }
 }
+
+void moveSelecionadoPICA(PONTOS matriz[][7], int *selecionado, char *movimentos, int tamanho){
+    int i;
+    char* ponteiro = movimentos;
+    PONTOS *endereco = &matriz[0][0];
+    for(i=0; i<tamanho; i++){
+        if(*(ponteiro+i) == '\n') break;
+        switch(*(ponteiro+i)){
+            case '2':
+                if((endereco + ((*(selecionado+1)+1)*DIM) + *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)+1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) += 1;
+                break;
+            case '4':
+                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == 'o') *(selecionado) -= 1;
+                break;
+            case '6':
+                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == 'o') *(selecionado) += 1;
+                break;
+            case '8':
+                if((endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) -= 1;
+                break;
+        }
+    }
+
+}
 int main(){
     PONTOS matriz[DIM][DIM];
     int selecionado[2] = {5,3};
     int direcao, trocaEstado = 0;
+    char movimentos[13];
     geraMatriz(matriz);
     while(1){
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
-             printf("Você está no modo de movimentar pecas.\n");
-        }else{
-             printf("Você está no modo de comer pecas.\n");
+            printf("Você está no modo de movimentar pecas.\n");
+            printf("por favor, digite o movimento: ");
+            fgets(movimentos, 13, stdin);
+            moveSelecionadoPICA(matriz, selecionado, movimentos, 13);
+                    
         }
-        printf("por favor, digite o movimento: ");
-        direcao = (getchar() - 48);
-        while(getchar() != '\n');
+        else{
+            printf("Você está no modo de comer pecas.\n");
+            printf("por favor, digite o movimento: ");
+            direcao = (getchar() - 48);
+            while(getchar() != '\n');
+        }
+        
         if(direcao == 65){
             if(trocaEstado){
                 trocaEstado = 0;
-            }else{
+            }
+            else{
                 trocaEstado = 1;
             }
         }
         if(trocaEstado){
             moveSelecionado(selecionado,direcao);
-        }else{
+        }
+        else{
             podeMover(matriz,selecionado,direcao);
         }
         printf("\033[1;1H\033[2J");
