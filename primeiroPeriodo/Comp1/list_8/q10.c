@@ -9,7 +9,7 @@ typedef struct _JOGADOR{
 int main(){
     int i,j;
     JOGADOR *jogadores;
-    jogadores = ( JOGADOR *) malloc ( sizeof (JOGADOR)*DIM);
+    jogadores = (JOGADOR *) malloc (sizeof (JOGADOR)*DIM);
 
     for (i = 0; i < DIM; i++){
         printf("Por favor, digite o nome do jogador: ");
