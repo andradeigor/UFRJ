@@ -122,26 +122,26 @@ int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
     switch(direcao){
         case 2:
             if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
-            movePeca(matriz, (selecionado), direcao);
-            return 0;
+                movePeca(matriz, (selecionado), direcao);
+                return 0;
             }
             break;
         case 4:
             if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-2))->estadoAtual == '.' ){
-            movePeca(matriz, (selecionado), direcao);
-            return 0;
+                movePeca(matriz, (selecionado), direcao);
+                return 0;
             }
             break;
         case 6:
             if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+2))->estadoAtual == '.' ){
-            movePeca(matriz, (selecionado), direcao);
-            return 0;
+                movePeca(matriz, (selecionado), direcao);
+                return 0;
             }
             break;
         case 8:
             if(((ponteiro+(*(selecionado+1)-1)*DIM)+*(selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)-2)*DIM)+*(selecionado))->estadoAtual == '.' ){
-            movePeca(matriz, (selecionado), direcao);
-            return 0;
+                movePeca(matriz, (selecionado), direcao);
+                return 0;
             }
             break;
         default: 
@@ -158,10 +158,9 @@ int podeMoverTudo(PONTOS matriz[][DIM], int x, int y){
     *(ponto+1) = y;
     for(i=0; i<4; i++){
         movimento = podeMover(matriz, ponto, moves[i]);
-        if(movimento) return 1;
+        if(!movimento) return 1;
     }
     return 0;
-    
 }
 int verificaVitoria(PONTOS matriz[][DIM]){
     int x, y, bolinha = 0;
@@ -242,7 +241,7 @@ void moveSelecionadoPICA(PONTOS matriz[][7], int *selecionado, char *movimentos,
 int main(){
     PONTOS matriz[DIM][DIM];
     int selecionado[2] = {5,3};
-    int direcao, trocaEstado = 0;
+    int direcao, trocaEstado = 0, estadoDoJogo;
     char movimentos[13];
     geraMatriz(matriz);
     while(1){
@@ -276,13 +275,15 @@ int main(){
             podeMover(matriz,selecionado,direcao);
         }
         printf("\033[1;1H\033[2J");
-        if(verificaVitoria(matriz)){
+        estadoDoJogo =verificaVitoria(matriz); 
+        if(estadoDoJogo){
            printf("Você ganhou!!!\n");
-           return 1; 
+           break; 
         };
-        if(!verificaDerrota(matriz)){
+        estadoDoJogo = verificaDerrota(matriz);
+        if(!estadoDoJogo){
             printf("se fudeu\n");
-            return 1;
+            break;
         };
     }
     
