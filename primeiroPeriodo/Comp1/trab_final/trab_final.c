@@ -39,14 +39,14 @@ void geraMatriz(PONTOS matriz[][DIM]){
     ((ponteiro+3*DIM)+ 3)->estadoAtual = '.';
 }
 
-void printaMatriz(PONTOS matriz[][DIM], int selecionado[]){
+void printaMatriz(PONTOS matriz[][DIM], int selecionado[], int trocaEstado){
     int i, j;
     PONTOS *ponteiro;
     ponteiro = &matriz[0][0];
     for(i=0; i<DIM; i++){
         for(j=0; j<DIM; j++){
             if(j == selecionado[0] && i == selecionado[1]){
-                printf("(%c)", ((ponteiro+i*DIM)+ j)->estadoAtual);
+                trocaEstado? printf("[%c]", ((ponteiro+i*DIM)+ j)->estadoAtual):printf("(%c)", ((ponteiro+i*DIM)+ j)->estadoAtual);
             }else{
                 printf(" %c ", ((ponteiro+i*DIM)+ j)->estadoAtual);
             }
@@ -66,6 +66,45 @@ void printaCoordenadas(PONTOS matriz[][DIM]){
     }
 }
 
+void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
+    PONTOS* ponteiro;
+    ponteiro = &matriz[0][0];
+    
+    switch (direcao)
+    {
+    case 2:
+        (ponteiro+(*(selecionado+1)*DIM)+*(selecionado))->estadoAtual = '.';
+        ((ponteiro+(*(selecionado +1)+1)*DIM)+*(selecionado))->estadoAtual = '.';
+        ((ponteiro+(*(selecionado +1)+2)*DIM)+*(selecionado))->estadoAtual = 'o';
+        *(selecionado+1) +=2; 
+        break;
+        
+    case 4:
+        (ponteiro+(*(selecionado +1)*DIM)+*(selecionado))->estadoAtual = '.';
+        ((ponteiro+*(selecionado +1)*DIM)+(*(selecionado)-1))->estadoAtual = '.';
+        ((ponteiro+*(selecionado +1)*DIM)+(*(selecionado)-2))->estadoAtual = 'o';
+        *(selecionado) -=2; 
+        break;
+    
+    case 6:
+        (ponteiro+(*(selecionado +1)*DIM)+*(selecionado))->estadoAtual = '.';
+        (ponteiro+(*(selecionado +1)*DIM)+(*(selecionado)+1))->estadoAtual = '.';
+        (ponteiro+(*(selecionado +1)*DIM)+(*(selecionado)+2))->estadoAtual = 'o';
+        *(selecionado) +=2;         
+        break;
+    case 8:  
+        (ponteiro+(*(selecionado +1)*DIM)+*(selecionado))->estadoAtual = '.';
+        ((ponteiro+(*(selecionado +1)-1)*DIM)+*(selecionado))->estadoAtual = '.';
+        ((ponteiro+(*(selecionado +1)-2)*DIM)+*(selecionado))->estadoAtual = 'o';
+        *(selecionado+1) -= 2;
+        break;
+    
+    default:
+        break;
+    }
+}
+
+
 /*TABELA PROVISORIA:
   2 - Baixo
   4 - Esquerda 
@@ -73,41 +112,49 @@ void printaCoordenadas(PONTOS matriz[][DIM]){
   8 - Cima
   */
 
-int podeMover(PONTOS matriz[][DIM], int x, int y, int direcao){
+int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
     PONTOS *ponteiro;
     ponteiro = &matriz[0][0];
-    if(((ponteiro+y*DIM)+x)->estadoAtual != 'o') return 0;
+    if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') printf("ISSO NEM EH UMA PECA, MALUCO!\n");;
     switch(direcao){
         case 2:
-            if(((ponteiro+(y+1)*DIM)+x)->estadoAtual == 'o' && ((ponteiro+(y+2)*DIM)+x)->estadoAtual == '.' ){
-                return 1;
+            if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
+            movePeca(matriz, (selecionado), direcao);
+            return 0;
             }
             break;
         case 4:
-            if(((ponteiro+y*DIM)+(x-1))->estadoAtual == 'o' && ((ponteiro+y*DIM)+(x-2))->estadoAtual == '.' ){
-                 return 1;
+            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-2))->estadoAtual == '.' ){
+            movePeca(matriz, (selecionado), direcao);
+            return 0;
             }
             break;
         case 6:
-            if(((ponteiro+y*DIM)+(x+1))->estadoAtual == 'o' && ((ponteiro+y*DIM)+(x+2))->estadoAtual == '.' ){
-                return 1;
+            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+2))->estadoAtual == '.' ){
+            movePeca(matriz, (selecionado), direcao);
+            return 0;
             }
             break;
         case 8:
-            if(((ponteiro+(y-1)*DIM)+x)->estadoAtual == 'o' && ((ponteiro+(y-2)*DIM)+x)->estadoAtual == '.' ){
-                return 1;
+            if(((ponteiro+(*(selecionado+1)-1)*DIM)+*(selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)-2)*DIM)+*(selecionado))->estadoAtual == '.' ){
+            movePeca(matriz, (selecionado), direcao);
+            return 0;
             }
             break;
         default: 
-            return -1;
+            printf("VOCE EH BURRO IRMAO? DIGITA UM COMANDO VALIDO!\n");
             break;
     }
-    return -1;
+    return 1;
 }
 int podeMoverTudo(PONTOS matriz[][DIM], int x, int y){
     int moves[4] = {2,4,6,8}, i, movimento;
+    int *ponto;
+    ponto = (int*) malloc(sizeof(int)*2);
+    *(ponto) = x;
+    *(ponto+1) = y;
     for(i=0; i<4; i++){
-        movimento = podeMover(matriz, x, y, moves[i]);
+        movimento = podeMover(matriz, ponto, moves[i]);
         if(movimento) return 1;
     }
     return 0;
@@ -141,26 +188,58 @@ int verificaDerrota(PONTOS matriz[][DIM]){
         }
     }
     return 0;
-}  
+}
 
+void moveSelecionado(int *selecionado, int direcao){
+        switch (direcao)
+    {
+    case 2:
+        *(selecionado+1) +=1; 
+        break;
+        
+    case 4:
+        *(selecionado) -=1; 
+        break;
+    
+    case 6:
+        *(selecionado) +=1;         
+        break;
+    case 8:  
+        *(selecionado+1) -= 1;
+        break;
+    
+    default:
+        break;
+    }
+}
 int main(){
     PONTOS matriz[DIM][DIM];
-    int selecionado[2] = {3,5};
-    int eValido, movimento;
+    int selecionado[2] = {5,3};
+    int direcao, trocaEstado = 0;
     geraMatriz(matriz);
     while(1){
-        printaMatriz(matriz, selecionado);
+        printaMatriz(matriz, selecionado, trocaEstado);
+        if(trocaEstado){
+             printf("Você está no modo de movimentar pecas.\n");
+        }else{
+             printf("Você está no modo de comer pecas.\n");
+        }
         printf("por favor, digite o movimento: ");
-        movimento = (getchar() - 48);
+        direcao = (getchar() - 48);
         while(getchar() != '\n');
-        eValido = podeMover(matriz,selecionado[0],selecionado[1],movimento);
-        if(eValido==1){
-            printf("MEU DEUS EU POSSO MOVER!!!!!\n");
+        if(direcao == 65){
+            if(trocaEstado){
+                trocaEstado = 0;
+            }else{
+                trocaEstado = 1;
+            }
         }
-        else if (eValido==0){
-            printf("ESSA NAO EU NAO CONSIGO ME MEXER!!!\n");
+        if(trocaEstado){
+            moveSelecionado(selecionado,direcao);
+        }else{
+            podeMover(matriz,selecionado,direcao);
         }
-        else printf("VOCE EH BURRO IRMAO? DIGITA UM COMANDO VALIDO!\n");
+        printf("\033[1;1H\033[2J");
         if(verificaVitoria(matriz)){
            printf("Você ganhou!!!\n");
            return 1; 
