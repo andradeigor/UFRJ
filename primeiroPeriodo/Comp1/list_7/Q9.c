@@ -29,7 +29,7 @@ int main(void){
         /* verifica se algum dos elementos de pvetor é maior que a média, se for, soma um a variável mMedia*/
         if (*(pvetor+i)> media) mMedia++;
     }
-    printf ("a média é: %1.2f\n", media);
+    printf ("a media e: %1.2f\n", media);
     printf ("O numero de valores maiores que a media e: %d\n", mMedia);
     /* aqui nao preciso mais de pvetor */
     free (pvetor);

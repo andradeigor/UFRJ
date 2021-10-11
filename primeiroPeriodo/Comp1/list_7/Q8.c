@@ -11,7 +11,7 @@ int main(){
         n++;
         free(pvetor);       
     }
-    printf("Cheguei no meu limite.O numero maximo de megabytes foi %d\n", max);
+    printf("Cheguei no meu limite.O numero maximo de megabytes foi %dMiB\n", max);
 
     return 0;
 }

@@ -11,7 +11,7 @@ int main (int argc, char *argv []) {
         return 1; 
      }
      else { 
-        for (i=0; i < argc; i++) { 
+        for (i=1; i < argc; i++) { 
              numero = atoi (argv[i]); 
              if (verif_par (numero) == 0)
                  printf ("o valor lido %d é par\n", numero);

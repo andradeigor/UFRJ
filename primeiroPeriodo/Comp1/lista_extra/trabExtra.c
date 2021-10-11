@@ -126,10 +126,25 @@ int PrimeiroNome(contato contato, char nome[]){
     return verificaNome;
     
 }
+int procuraMes(contato contato, int mes){
+    
+    if(contato.aniversarioContato.mes == mes ){
+        return 1;
+    }
+    return 0;
+}
+
+int procuraDia(contato contato, int dia){
+    
+    if(contato.aniversarioContato.dia == dia ){
+        return 1;
+    }
+    return 0;
+}
 
 int main(){
     contato *agenda;
-    int i;
+    int i, mesParaProcurar, diaParaProcurar;
     char nomeProcura[50];
     agenda = (contato*) malloc(sizeof(contato)*SIZE);
     for(i=0;i<SIZEACTUAL;i++){
@@ -158,8 +173,32 @@ int main(){
             printf("telefone:(%d) %d \n", agenda[i].telefoneContato.ddd, agenda[i].telefoneContato.telefone);
             printf("aniversario:%d/%d/%d\n", agenda[i].aniversarioContato.dia, agenda[i].aniversarioContato.mes, agenda[i].aniversarioContato.ano);
             printf("obeservação:%s\n", agenda[i].observacao);
+            printf("-----------------------\n");
         }
     }
-    
+    printf("Por favor, digite o mes que deseja procurar:ex(05) \n");
+    scanf("%d", &mesParaProcurar);
+    printf("%d\n", mesParaProcurar);
+    for (i = 0; i < SIZEACTUAL; i++){
+         if(procuraMes(agenda[i],mesParaProcurar)){
+            printf("Contato encontrado!\n");
+            printf("-----------------------\n");
+            printf("Nome:%s\n", agenda[i].nome);
+            printf("aniversario:%d/%d/%d\n", agenda[i].aniversarioContato.dia, agenda[i].aniversarioContato.mes, agenda[i].aniversarioContato.ano);     
+            printf("-----------------------\n");
+         }
+    }
+    printf("Por favor, digite o dia e o mes que deseja procurar:ex(05/06) \n");
+    scanf("%d/%d", &diaParaProcurar, &mesParaProcurar);
+    printf("%d/%d\n", diaParaProcurar, mesParaProcurar);
+    for (i = 0; i < SIZEACTUAL; i++){
+         if(procuraDia(agenda[i],diaParaProcurar) && procuraMes(agenda[i],mesParaProcurar)){
+            printf("Contato encontrado!\n");
+            printf("-----------------------\n");
+            printf("Nome:%s\n", agenda[i].nome);
+            printf("aniversario:%d/%d/%d\n", agenda[i].aniversarioContato.dia, agenda[i].aniversarioContato.mes, agenda[i].aniversarioContato.ano);     
+            printf("-----------------------\n");
+         }
+    }
     return 0;
 }

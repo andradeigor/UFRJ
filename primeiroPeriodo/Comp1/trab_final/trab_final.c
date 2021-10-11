@@ -122,25 +122,21 @@ int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
     switch(direcao){
         case 2:
             if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
-                movePeca(matriz, (selecionado), direcao);
                 return 0;
             }
             break;
         case 4:
             if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-2))->estadoAtual == '.' ){
-                movePeca(matriz, (selecionado), direcao);
                 return 0;
             }
             break;
         case 6:
             if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+2))->estadoAtual == '.' ){
-                movePeca(matriz, (selecionado), direcao);
                 return 0;
             }
             break;
         case 8:
             if(((ponteiro+(*(selecionado+1)-1)*DIM)+*(selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)-2)*DIM)+*(selecionado))->estadoAtual == '.' ){
-                movePeca(matriz, (selecionado), direcao);
                 return 0;
             }
             break;
@@ -241,7 +237,7 @@ void moveSelecionadoPICA(PONTOS matriz[][7], int *selecionado, char *movimentos,
 int main(){
     PONTOS matriz[DIM][DIM];
     int selecionado[2] = {5,3};
-    int direcao, trocaEstado = 0, estadoDoJogo;
+    int direcao, trocaEstado = 0, estadoDoJogo, canMove;
     char movimentos[13];
     geraMatriz(matriz);
     while(1){
@@ -270,9 +266,13 @@ int main(){
         }
         if(trocaEstado){
             moveSelecionado(selecionado,direcao);
+          
         }
         else{
-            podeMover(matriz,selecionado,direcao);
+            canMove = podeMover(matriz,selecionado,direcao);
+            if(!canMove){
+                movePeca(matriz, (selecionado), direcao);
+            }
         }
         printf("\033[1;1H\033[2J");
         estadoDoJogo =verificaVitoria(matriz); 

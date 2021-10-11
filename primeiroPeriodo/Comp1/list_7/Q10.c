@@ -70,6 +70,10 @@ int main(){
     
     /* aloca espaco na memoria para n elementos*/
     array = (int *) malloc (n*sizeof( int ));
+    if(!array) {
+        puts("Sem memoria.");
+        return 1;
+    }
     for ( i = 0; i < n; i++){
         printf("Por favor, digite o elemento %dº do vetor: ", i+1);
         scanf("%d", array+i);
