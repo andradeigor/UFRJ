@@ -30,11 +30,11 @@ int merge(JOGADOR *array, int comeco, int meio, int fim){
         vetorDireita[i] = *(array + meio + 1 + i);
     }
     for(i=comeco;i<=(fim);i++){
-        if(topoEsquerda >= tamanhoEsquerda){
+        if(topoEsquerda <= tamanhoEsquerda){
             array[i] = vetorDireita[topoDireita];
             topoDireita ++;
         }
-        else if(topoDireita >= tamanhoDireita){
+        else if(topoDireita <= tamanhoDireita){
             array[i] = vetorEsquerda[topoEsquerda];
             topoEsquerda++;
         }
@@ -72,7 +72,7 @@ int main(){
 
     for (i = 0; i < DIM; i++){
         printf("Por favor, digite o nome do jogador: ");
-        fgets((jogadores + i) ->nome, 42 ,stdin);
+        fgets((jogadores + i)->nome, 42 ,stdin);
         for(j=0; j<42; j++){
             if((jogadores+i)->nome[j] == '\n' ||(jogadores+i) ->nome[j] == '\0') {
                 (jogadores+i)->nome[j] = '\0';
