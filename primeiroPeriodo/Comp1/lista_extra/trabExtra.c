@@ -142,6 +142,24 @@ int procuraDia(contato contato, int dia){
     return 0;
 }
 
+void ordenaAgenda(contato *pessoa, int size){
+    int i=0, j, ordenei=0;
+    contato aux;
+    do{
+        ordenei = 0;
+        for(i=0;i<size-1;i++){
+                if(strcmp(pessoa[i].nome,pessoa[i+1].nome) < 0){
+                    printf("cheguei aqui\n");
+                    aux = pessoa[i];
+                    pessoa[i] = pessoa[i+1];
+                    pessoa[i+1] = aux;
+                    ordenei++;
+                }
+        }
+
+    }while(ordenei);
+
+}
 int main(){
     contato *agenda;
     int i, mesParaProcurar, diaParaProcurar;
@@ -199,6 +217,13 @@ int main(){
             printf("aniversario:%d/%d/%d\n", agenda[i].aniversarioContato.dia, agenda[i].aniversarioContato.mes, agenda[i].aniversarioContato.ano);     
             printf("-----------------------\n");
          }
+    }
+    ordenaAgenda(agenda, SIZEACTUAL);
+    for (i = 0; i < SIZEACTUAL; i++){
+        printf("-----------------------\n");
+        printf("Nome:%s\n", agenda[i].nome);
+
+        printf("-----------------------\n");
     }
     return 0;
 }
