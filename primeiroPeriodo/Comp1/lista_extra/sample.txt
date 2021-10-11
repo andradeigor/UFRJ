@@ -1,0 +1,65 @@
+igor
+igor@igor.com
+i
+5
+casa roxa
+penha
+21202-000
+rio de janeiro
+rio de janeiro
+brasil
+21 999999999
+01/02/1000
+eu sou o igor
+lucas
+lucas@lucas.com
+i
+7
+casa larajna
+vila da penha
+21202-001
+mesquita
+rio de janeiro
+brasil
+21 998999999
+01/03/1000
+eu sou o lucas
+bernardo
+bernardo@bernardo.com
+paula matos
+15
+casa rica
+santa teressa
+21202-001
+rio de janeiro
+rio de janeiro
+brasil
+21 999999899
+01/02/1001
+eu sou o bernardo
+joao
+joao@joao.com
+g
+48
+casa preta
+ipase
+21202-001
+rio de janeiro
+rio de janeiro
+brasil
+21 999999998
+01/02/0999
+eu sou o joao
+bia
+bia@bia.com
+rua das pedras
+46
+casa azul
+imbarie
+21202-001
+duque de caxias
+rio de janeiro
+brasil
+21 969999999
+01/02/1005
+eu sou o bia
