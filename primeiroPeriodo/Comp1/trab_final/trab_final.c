@@ -237,10 +237,19 @@ void moveSelecionadoPICA(PONTOS matriz[][7], int *selecionado, char *movimentos,
 int main(){
     PONTOS matriz[DIM][DIM];
     int selecionado[2] = {5,3};
-    int direcao, trocaEstado = 0, estadoDoJogo, canMove;
+    int direcao, trocaEstado = 0, 
+    estadoDoJogo, canMove,escolha;
     char movimentos[13];
     geraMatriz(matriz);
+    printf("Bem-Vindo ao Resta 1!\n\nDigite:\n1 - Novo Jogo\n2 - Carregar Jogo\n3 - Sair\n");
+    scanf("%d",&escolha);
     while(1){
+        #ifdef __linux__ 
+           printf("\033[1;1H\033[2J");
+        #elif _WIN32
+            system(cls)
+
+        #endif
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
             printf("Você está no modo de movimentar pecas.\n");
@@ -274,7 +283,8 @@ int main(){
                 movePeca(matriz, (selecionado), direcao);
             }
         }
-        printf("\033[1;1H\033[2J");
+
+        
         estadoDoJogo =verificaVitoria(matriz); 
         if(estadoDoJogo){
            printf("Você ganhou!!!\n");
@@ -282,7 +292,7 @@ int main(){
         };
         estadoDoJogo = verificaDerrota(matriz);
         if(!estadoDoJogo){
-            printf("se fudeu\n");
+            printf("Você perdeu :C\n");
             break;
         };
     }
