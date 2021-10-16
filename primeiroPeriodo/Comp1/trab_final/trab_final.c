@@ -7,6 +7,102 @@ typedef struct _PONTOS{
     int x,y;
 } PONTOS;
 
+
+
+
+int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
+    PONTOS *ponteiro;
+    ponteiro = &matriz[0][0];
+    if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') {
+        printf("ISSO NEM EH UMA PECA, MALUCO!\n");
+        return 1;
+    }
+    switch(direcao){
+        case 2:
+            if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
+                return 0;
+            }
+            break;
+        case 4:
+            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-2))->estadoAtual == '.' ){
+                return 0;
+            }
+            break;
+        case 6:
+            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+2))->estadoAtual == '.' ){
+                return 0;
+            }
+            break;
+        case 8:
+            if(((ponteiro+(*(selecionado+1)-1)*DIM)+*(selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)-2)*DIM)+*(selecionado))->estadoAtual == '.' ){
+                return 0;
+            }
+            break;
+        default: 
+            break;
+    }
+    return 1;
+}
+int podeMoverTudo(PONTOS matriz[][DIM], int x, int y){
+    int moves[4] = {2,4,6,8}, i, movimento;
+    int *ponto;
+    ponto = (int*) malloc(sizeof(int)*2);
+    *(ponto) = x;
+    *(ponto+1) = y;
+    for(i=0; i<4; i++){
+        movimento = podeMover(matriz, ponto, moves[i]);
+        if(!movimento) return 1;
+    }
+    return 0;
+}
+
+
+void moveSelecionado(int *selecionado, int direcao){
+        switch (direcao)
+    {
+    case 2:
+        *(selecionado+1) +=1; 
+        break;
+        
+    case 4:
+        *(selecionado) -=1; 
+        break;
+    
+    case 6:
+        *(selecionado) +=1;         
+        break;
+    case 8:  
+        *(selecionado+1) -= 1;
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void moveSelecionadoMultiplo(PONTOS matriz[][7], int *selecionado, char *movimentos, int tamanho){
+    int i;
+    char* ponteiro = movimentos;
+    PONTOS *endereco = &matriz[0][0];
+    for(i=0; i<tamanho; i++){
+        if(*(ponteiro+i) == '\0') break;
+        switch(*(ponteiro+i)){
+            case '2':
+                if((endereco + ((*(selecionado+1)+1)*DIM) + *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)+1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) += 1;
+                break;
+            case '4':
+                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == 'o') *(selecionado) -= 1;
+                break;
+            case '6':
+                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == 'o') *(selecionado) += 1;
+                break;
+            case '8':
+                if((endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) -= 1;
+                break;
+        }
+    }
+
+}
 void geraMatriz(PONTOS matriz[][DIM]){
     int i, j;
     PONTOS *ponteiro;
@@ -69,7 +165,6 @@ void printaCoordenadas(PONTOS matriz[][DIM]){
 void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
     PONTOS* ponteiro;
     ponteiro = &matriz[0][0];
-    
     switch (direcao)
     {
     case 2:
@@ -112,52 +207,7 @@ void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
   8 - Cima
   */
 
-int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
-    PONTOS *ponteiro;
-    ponteiro = &matriz[0][0];
-    if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') {
-        printf("ISSO NEM EH UMA PECA, MALUCO!\n");
-        return 1;
-    }
-    switch(direcao){
-        case 2:
-            if(((ponteiro+(*(selecionado+1)+1)*DIM)+(*selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)+2)*DIM)+*selecionado)->estadoAtual == '.' ){
-                return 0;
-            }
-            break;
-        case 4:
-            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)-2))->estadoAtual == '.' ){
-                return 0;
-            }
-            break;
-        case 6:
-            if(((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+1))->estadoAtual == 'o' && ((ponteiro+*(selecionado+1)*DIM)+(*(selecionado)+2))->estadoAtual == '.' ){
-                return 0;
-            }
-            break;
-        case 8:
-            if(((ponteiro+(*(selecionado+1)-1)*DIM)+*(selecionado))->estadoAtual == 'o' && ((ponteiro+(*(selecionado+1)-2)*DIM)+*(selecionado))->estadoAtual == '.' ){
-                return 0;
-            }
-            break;
-        default: 
-            printf("VOCE EH BURRO IRMAO? DIGITA UM COMANDO VALIDO!\n");
-            break;
-    }
-    return 1;
-}
-int podeMoverTudo(PONTOS matriz[][DIM], int x, int y){
-    int moves[4] = {2,4,6,8}, i, movimento;
-    int *ponto;
-    ponto = (int*) malloc(sizeof(int)*2);
-    *(ponto) = x;
-    *(ponto+1) = y;
-    for(i=0; i<4; i++){
-        movimento = podeMover(matriz, ponto, moves[i]);
-        if(!movimento) return 1;
-    }
-    return 0;
-}
+
 int verificaVitoria(PONTOS matriz[][DIM]){
     int x, y, bolinha = 0;
     PONTOS *ponteiro;
@@ -187,75 +237,68 @@ int verificaDerrota(PONTOS matriz[][DIM]){
     }
     return 0;
 }
-
-void moveSelecionado(int *selecionado, int direcao){
-        switch (direcao)
-    {
-    case 2:
-        *(selecionado+1) +=1; 
-        break;
+int CarregaJogo(FILE *movimento, PONTOS matriz[][DIM], int *selecionado){
+    int letra,movimentoValido, i;
+    char movimentos[13];
+    letra = fgetc(movimento);
+    if(letra ==EOF){
+        printf("Não há jogos salvos, favor começar um novo!\n");
+        return 1;   
+    }
+    while(letra !=EOF){
         
-    case 4:
-        *(selecionado) -=1; 
-        break;
-    
-    case 6:
-        *(selecionado) +=1;         
-        break;
-    case 8:  
-        *(selecionado+1) -= 1;
-        break;
-    
-    default:
-        break;
-    }
-}
+        if(letra =='q'){
+            i=0;
+            while(letra!='\n'){
+                letra = fgetc(movimento);
+                movimentos[i] = letra;
+                i++;
 
-void moveSelecionadoPICA(PONTOS matriz[][7], int *selecionado, char *movimentos, int tamanho){
-    int i;
-    char* ponteiro = movimentos;
-    PONTOS *endereco = &matriz[0][0];
-    for(i=0; i<tamanho; i++){
-        if(*(ponteiro+i) == '\n') break;
-        switch(*(ponteiro+i)){
-            case '2':
-                if((endereco + ((*(selecionado+1)+1)*DIM) + *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)+1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) += 1;
-                break;
-            case '4':
-                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)-1))->estadoAtual == 'o') *(selecionado) -= 1;
-                break;
-            case '6':
-                if((endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == '.' || (endereco+(*(selecionado+1)*DIM)+ (*(selecionado)+1))->estadoAtual == 'o') *(selecionado) += 1;
-                break;
-            case '8':
-                if((endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == '.' || (endereco+((*(selecionado+1)-1)*DIM)+ *(selecionado))->estadoAtual == 'o') *(selecionado+1) -= 1;
-                break;
+            }
+            movimentos[i+1] = '\0';
+            printf("%s", movimentos);
+            moveSelecionadoMultiplo(matriz,selecionado,movimentos,13);
+        }else{
+            printf("letra normal %d\n", letra-48);
+            movimentoValido = podeMover(matriz,selecionado,letra - 48);
+            if(!movimentoValido){
+                movePeca(matriz, (selecionado), letra - 48);
+            }
+            
         }
+            letra = fgetc(movimento);
     }
-
+    return 0;
 }
+
 int main(){
     PONTOS matriz[DIM][DIM];
+    FILE *arquivo;
     int selecionado[2] = {5,3};
     int direcao, trocaEstado = 0, 
     estadoDoJogo, canMove,escolha;
     char movimentos[13];
+
     geraMatriz(matriz);
+
+    arquivo = fopen("movimentos.txt", "a+");
+
     printf("Bem-Vindo ao Resta 1!\n\nDigite:\n1 - Novo Jogo\n2 - Carregar Jogo\n3 - Sair\n");
     scanf("%d",&escolha);
+    if(escolha ==2){
+        CarregaJogo(arquivo, matriz, selecionado);
+        printf("implementar carregamento\n");
+    }else if(escolha==3){
+        exit(1);
+    }
     while(1){
-        #ifdef __linux__ 
-           printf("\033[1;1H\033[2J");
-        #elif _WIN32
-            system(cls)
 
-        #endif
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
             printf("Você está no modo de movimentar pecas.\n");
             printf("por favor, digite o movimento: ");
             fgets(movimentos, 13, stdin);
-            moveSelecionadoPICA(matriz, selecionado, movimentos, 13);
+            moveSelecionadoMultiplo(matriz, selecionado, movimentos, 13);
                     
         }
         else{
@@ -275,7 +318,7 @@ int main(){
         }
         if(trocaEstado){
             moveSelecionado(selecionado,direcao);
-          
+        
         }
         else{
             canMove = podeMover(matriz,selecionado,direcao);
@@ -284,11 +327,16 @@ int main(){
             }
         }
 
-        
+        #ifdef __linux__ 
+            printf("\033[1;1H\033[2J");
+        #elif _WIN32
+            system(cls)
+
+        #endif
         estadoDoJogo =verificaVitoria(matriz); 
         if(estadoDoJogo){
-           printf("Você ganhou!!!\n");
-           break; 
+            printf("Você ganhou!!!\n");
+            break; 
         };
         estadoDoJogo = verificaDerrota(matriz);
         if(!estadoDoJogo){
