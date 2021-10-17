@@ -14,7 +14,6 @@ int podeMover(PONTOS matriz[][DIM], int *selecionado, int direcao){
     PONTOS *ponteiro;
     ponteiro = &matriz[0][0];
     if(((ponteiro+(*(selecionado+1))*DIM)+(*selecionado))->estadoAtual != 'o') {
-        printf("ISSO NEM EH UMA PECA, MALUCO!\n");
         return 1;
     }
     switch(direcao){
@@ -58,8 +57,7 @@ int podeMoverTudo(PONTOS matriz[][DIM], int x, int y){
 
 
 void moveSelecionado(int *selecionado, int direcao){
-        switch (direcao)
-    {
+    switch (direcao){
     case 2:
         *(selecionado+1) +=1; 
         break;
@@ -151,7 +149,7 @@ void printaMatriz(PONTOS matriz[][DIM], int selecionado[], int trocaEstado){
     }
 }
 
-void printaCoordenadas(PONTOS matriz[][DIM]){
+/*(void printaCoordenadas(PONTOS matriz[][DIM]){
     int i,j;
     PONTOS *ponteiros;
     ponteiros = &matriz[0][0];
@@ -161,6 +159,7 @@ void printaCoordenadas(PONTOS matriz[][DIM]){
         }
     }
 }
+*/
 
 void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
     PONTOS* ponteiro;
@@ -200,12 +199,6 @@ void movePeca(PONTOS matriz[][DIM],int* selecionado, int direcao){
 }
 
 
-/*TABELA PROVISORIA:
-  2 - Baixo
-  4 - Esquerda 
-  6 - Direita
-  8 - Cima
-  */
 
 
 int verificaVitoria(PONTOS matriz[][DIM]){
@@ -246,7 +239,7 @@ int CarregaJogo(FILE *movimento, PONTOS matriz[][DIM], int *selecionado){
         return 1;   
     }
     while(letra !=EOF){
-        
+    
         if(letra =='q'){
             i=0;
             while(letra!='\n'){
@@ -256,20 +249,19 @@ int CarregaJogo(FILE *movimento, PONTOS matriz[][DIM], int *selecionado){
 
             }
             movimentos[i+1] = '\0';
-            printf("%s", movimentos);
             moveSelecionadoMultiplo(matriz,selecionado,movimentos,13);
         }else{
-            printf("letra normal %d\n", letra-48);
             movimentoValido = podeMover(matriz,selecionado,letra - 48);
             if(!movimentoValido){
                 movePeca(matriz, (selecionado), letra - 48);
             }
             
         }
-            letra = fgetc(movimento);
+        letra = fgetc(movimento);
     }
     return 0;
 }
+
 
 int main(){
     PONTOS matriz[DIM][DIM];
@@ -281,24 +273,36 @@ int main(){
 
     geraMatriz(matriz);
 
-    arquivo = fopen("movimentos.txt", "a+");
-
+    arquivo = fopen("movimento.txt", "a+");
     printf("Bem-Vindo ao Resta 1!\n\nDigite:\n1 - Novo Jogo\n2 - Carregar Jogo\n3 - Sair\n");
     scanf("%d",&escolha);
-    if(escolha ==2){
+    if(escolha == 2){
         CarregaJogo(arquivo, matriz, selecionado);
-        printf("implementar carregamento\n");
     }else if(escolha==3){
         exit(1);
-    }
-    while(1){
+    }/*
+    #ifdef __linux__ 
+        printf("\033[1;1H\033[2J");
+    #elif _WIN32
+        system(cls)
 
+    #endif*/
+    while(getchar() != '\n');
+    while(1){/*
+        #ifdef __linux__ 
+            printf("\033[1;1H\033[2J");
+        #elif _WIN32
+            system(cls)
+        #endif*/
+        arquivo = fopen("movimento.txt", "a+");
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
             printf("Você está no modo de movimentar pecas.\n");
             printf("por favor, digite o movimento: ");
             fgets(movimentos, 13, stdin);
             moveSelecionadoMultiplo(matriz, selecionado, movimentos, 13);
+            fprintf(arquivo,"q%s\n", movimentos);
+            fflush(arquivo);
                     
         }
         else{
@@ -311,9 +315,11 @@ int main(){
         if(direcao == 65){
             if(trocaEstado){
                 trocaEstado = 0;
+                continue;
             }
             else{
                 trocaEstado = 1;
+                continue;
             }
         }
         if(trocaEstado){
@@ -324,15 +330,12 @@ int main(){
             canMove = podeMover(matriz,selecionado,direcao);
             if(!canMove){
                 movePeca(matriz, (selecionado), direcao);
+                fprintf(arquivo, "%d", direcao);
+                fflush(arquivo);
             }
         }
 
-        #ifdef __linux__ 
-            printf("\033[1;1H\033[2J");
-        #elif _WIN32
-            system(cls)
 
-        #endif
         estadoDoJogo =verificaVitoria(matriz); 
         if(estadoDoJogo){
             printf("Você ganhou!!!\n");

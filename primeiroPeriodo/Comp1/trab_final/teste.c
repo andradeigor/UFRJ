@@ -3,28 +3,12 @@
 int main() {
     FILE *movimento;
     int letra,movimentoValido,i;
-    char movimentos[13];
+    char movimentos[13]={"44446868"};
+    i=4;
     movimento = fopen("movimentos.txt", "a+");
-    letra = fgetc(movimento);
-    if(letra ==EOF){
-        printf("Não há jogos salvos, favor começar um novo!\n");
-        return 1;   
-    }
-    while(letra !=EOF){
-        printf("letra normal %d\n", letra-48);
-        if(letra =='q'){
-            i=0;
-            while(letra!='\n'){
-                letra = fgetc(movimento);
-                printf("letra q%d\n", letra-48);
-                movimentos[i] = letra;
-                i++;
-
-            }
-            movimentos[i+1] = '\0';
-        }
-        letra = fgetc(movimento);
-    }
+    fprintf(movimento,"q%s\n", movimentos);
+    fprintf(movimento, "%d", i);
+    fclose(movimento);
     return 0;
 
 }
