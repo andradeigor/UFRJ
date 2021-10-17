@@ -138,6 +138,7 @@ void printaMatriz(PONTOS matriz[][DIM], int selecionado[], int trocaEstado){
     PONTOS *ponteiro;
     ponteiro = &matriz[0][0];
     for(i=0; i<DIM; i++){
+        printf("     ");
         for(j=0; j<DIM; j++){
             if(j == selecionado[0] && i == selecionado[1]){
                 trocaEstado? printf("[%c]", ((ponteiro+i*DIM)+ j)->estadoAtual):printf("(%c)", ((ponteiro+i*DIM)+ j)->estadoAtual);
@@ -243,12 +244,13 @@ int CarregaJogo(FILE *movimento, PONTOS matriz[][DIM], int *selecionado){
         if(letra =='q'){
             i=0;
             while(letra!='\n'){
+                
                 letra = fgetc(movimento);
                 movimentos[i] = letra;
                 i++;
 
             }
-            movimentos[i+1] = '\0';
+            movimentos[i] = '\0';
             moveSelecionadoMultiplo(matriz,selecionado,movimentos,13);
         }else{
             movimentoValido = podeMover(matriz,selecionado,letra - 48);
@@ -274,39 +276,50 @@ int main(){
     geraMatriz(matriz);
 
     arquivo = fopen("movimento.txt", "a+");
+    #ifdef __linux__ 
+        printf("\033[1;1H\033[2J");
+    #elif _WIN32
+        system("cls");
+    #endif
+    printf("  _____           _          __ \n |  __ \\         | |        /_ |\n | |__) |___  ___| |_ __ _   | |\n |  _  // _ \\/ __| __/ _` |  | |\n | | \\ \\  __/\\__ \\ || (_| |  | |\n |_|  \\_\\___||___/\\__\\__,_|  |_|\n                                \n");
     printf("Bem-Vindo ao Resta 1!\n\nDigite:\n1 - Novo Jogo\n2 - Carregar Jogo\n3 - Sair\n");
+    printf("Opção: ");
     scanf("%d",&escolha);
     if(escolha == 2){
         CarregaJogo(arquivo, matriz, selecionado);
     }else if(escolha==3){
         exit(1);
-    }/*
+    }
+    if(escolha ==1){
+        fclose(fopen("movimento.txt", "w"));
+        arquivo = fopen("movimento.txt", "a+");
+    }
     #ifdef __linux__ 
         printf("\033[1;1H\033[2J");
     #elif _WIN32
-        system(cls)
+        system("cls");
 
-    #endif*/
+    #endif
     while(getchar() != '\n');
-    while(1){/*
+    while(1){
         #ifdef __linux__ 
             printf("\033[1;1H\033[2J");
         #elif _WIN32
-            system(cls)
-        #endif*/
-        arquivo = fopen("movimento.txt", "a+");
+            system("cls");
+        #endif
+        printf("  _____           _          __ \n |  __ \\         | |        /_ |\n | |__) |___  ___| |_ __ _   | |\n |  _  // _ \\/ __| __/ _` |  | |\n | | \\ \\  __/\\__ \\ || (_| |  | |\n |_|  \\_\\___||___/\\__\\__,_|  |_|\n                                \n");
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
-            printf("Você está no modo de movimentar pecas.\n");
+            printf("\nVocê está no modo de movimentar pecas.\n");
             printf("por favor, digite o movimento: ");
             fgets(movimentos, 13, stdin);
             moveSelecionadoMultiplo(matriz, selecionado, movimentos, 13);
-            fprintf(arquivo,"q%s\n", movimentos);
+            fprintf(arquivo,"q%s", movimentos);
             fflush(arquivo);
                     
         }
         else{
-            printf("Você está no modo de comer pecas.\n");
+            printf("\nVocê está no modo de comer pecas.\n");
             printf("por favor, digite o movimento: ");
             direcao = (getchar() - 48);
             while(getchar() != '\n');
@@ -315,11 +328,9 @@ int main(){
         if(direcao == 65){
             if(trocaEstado){
                 trocaEstado = 0;
-                continue;
             }
             else{
                 trocaEstado = 1;
-                continue;
             }
         }
         if(trocaEstado){
@@ -338,12 +349,12 @@ int main(){
 
         estadoDoJogo =verificaVitoria(matriz); 
         if(estadoDoJogo){
-            printf("Você ganhou!!!\n");
+            printf(" __      __        //\\    _____             _                   _   _ \n \\ \\    / /       |/ \\|  / ____|           | |                 | | | |\n  \\ \\  / /__   ___ ___  | |  __  __ _ _ __ | |__   ___  _   _  | | | |\n   \\ \\/ / _ \\ / __/ _ \\ | | |_ |/ _` | '_ \\| '_ \\ / _ \\| | | | | | | |\n    \\  / (_) | (_|  __/ | |__| | (_| | | | | | | | (_) | |_| | |_| |_|\n     \\/ \\___/ \\___\\___|  \\_____|\\__,_|_| |_|_| |_|\\___/ \\__,_| (_) (_)\n\n                                                                      ");
             break; 
         };
         estadoDoJogo = verificaDerrota(matriz);
         if(!estadoDoJogo){
-            printf("Você perdeu :C\n");
+            printf(" __      __        //\\   _____             _                    \n \\ \\    / /       |/ \\| |  __ \\           | |             _     \n  \\ \\  / /__   ___ ___  | |__) |__ _ __ __| | ___ _   _  (_)___ \n   \\ \\/ / _ \\ / __/ _ \\ |  ___/ _ \\ '__/ _` |/ _ \\ | | |   / __|\n    \\  / (_) | (_|  __/ | |  |  __/ | | (_| |  __/ |_| |  | (__ \n     \\/ \\___/ \\___\\___| |_|   \\___|_|  \\__,_|\\___|\\__,_| (_)___|\n\n                                                                ");
             break;
         };
     }
