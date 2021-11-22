@@ -1,6 +1,7 @@
 from random import randrange
 from collections import deque
-teste = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use itIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)." 
+
+
 códigos_para_símbolos = {111: '0', 112: '1', 113: '2', 114: '3', 115: '4',
 116: '5', 117: '6', 118: '7', 119: '8', 121: '9', 122: '=', 123: '+',
 124: '-', 125: '/', 126: '*', 127: 'a', 128: 'b', 129: 'c', 131: 'd',
@@ -146,8 +147,7 @@ def descriptarTCR(blocos,n,d,p,q,inversoQ):
 
 
 p,q,n,e,d,inversoP,inversoQ = gera_chaves()
-blocos = encripta("Uma vez Flamengo, sempre Flamengo Flamengo sempre eu hei de ser É meu maior prazer vê-lo brilhar Seja na terra, seja no mar Vencer, vencer, vencer! Uma vez Flamengo, Flamengo até morrer! Na regata, ele me mata Me maltrata, me arrebata De emoção no coração! Consagrado no gramado Sempre amado, o mais cotado No Fla-Flu é o Ai, Jesus! Eu teria um desgosto profundo Se faltasse o Flamengo no mundo Ele vibra, ele é fibra Muita libra já pesou Flamengo até morrer eu sou!",n,e)
-print(descriptarTCR(blocos,n,d,p,q,inversoQ))
+
 
 
 

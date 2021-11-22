@@ -1,4 +1,4 @@
-#include <stdio.h>g
+#include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
 #define DIM 7
@@ -389,7 +389,7 @@ int main(){
         printaMatriz(matriz, selecionado, trocaEstado);
         if(trocaEstado){
             /* se o troca estado for 1, esta no modo de mover peca entao ira chamar a funcao que move o selecionado*/
-            printf("\nVoce esta Rno modo de movimentar pecas.\n");
+            printf("\nVoce esta no modo de movimentar pecas.\n");
             printf("Por favor, digite o movimento: ");
             fgets(movimentos, 13, stdin);
             moveSelecionadoMultiplo(matriz, selecionado, movimentos, 13);
