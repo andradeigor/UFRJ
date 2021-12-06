@@ -13,25 +13,43 @@ public class Veiculo {
         this.dono = dono;
         this.tanque_atual =0;
         this.km_rodado =0;
-        iswrong = validarProp(tanque_capacid);
-        if(iswrong){
-            this.tanque_capacid = 10;
-        }else{
-            this.tanque_capacid = tanque_capacid;
-        }
-        iswrong = validarProp(autonomia_km_l);
-        if(iswrong){
-            this.autonomia_km_l = 10;
-        }else{
-            this.autonomia_km_l = autonomia_km_l;
-        }
+        this.iswrong = validarProp(tanque_capacid);
+        this.tanque_capacid = !this.iswrong?  10:  tanque_capacid;
+        this.iswrong = validarProp(autonomia_km_l);
+        this.autonomia_km_l = !this.iswrong? 10:autonomia_km_l;
 
     }
-    public void printei(){
-        System.out.println(this.marca);
+    public double LerTanqueAtual(){
+        return this.tanque_atual;
+    }
+    public double LerTanqueCapacid(){
+        return this.tanque_capacid;
+    }
+    public double LerAutonomia(){
+        return this.autonomia_km_l;
+    }
+    public double LerRodagem(){
+        return this.km_rodado;
+    }
+    public boolean alterarAutonomia(double prop){
+        this.iswrong = validarProp(prop);
+        if(this.iswrong){
+            this.autonomia_km_l = prop;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean AtualizarTanque(double prop){
+        this.iswrong = validarProp(prop);
+        if(!this.iswrong){
+            return false;
+        }
+        if(this.tanque_atual + prop<=this.tanque_capacid)
     }
     private boolean validarProp(double prop){
-        if(prop<=0){
+        if(prop<=0 ){
+            System.out.println("Parâmetro inválido!");
             return false;
         }
         return true;
