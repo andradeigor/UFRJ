@@ -31,21 +31,38 @@ public class Veiculo {
     public double LerRodagem(){
         return this.km_rodado;
     }
-    public boolean alterarAutonomia(double prop){
-        this.iswrong = validarProp(prop);
+    public boolean alterarAutonomia(double NovaAutonimia){
+        this.iswrong = validarProp(NovaAutonimia);
         if(this.iswrong){
-            this.autonomia_km_l = prop;
+            this.autonomia_km_l = NovaAutonimia;
             return true;
         }else{
             return false;
         }
     }
-    public boolean AtualizarTanque(double prop){
-        this.iswrong = validarProp(prop);
+    public boolean atualizarTanque(double LitrosCombustivel){
+        this.iswrong = validarProp(LitrosCombustivel);
         if(!this.iswrong){
             return false;
         }
-        if(this.tanque_atual + prop<=this.tanque_capacid)
+        if(this.tanque_atual + LitrosCombustivel<=this.tanque_capacid){
+            this.tanque_atual+=LitrosCombustivel;
+            return true;
+        }
+        return false;
+    }
+    public boolean fazerViagem(double km){
+        this.iswrong = validarProp(km);
+        if(!this.iswrong){
+            return false;
+        }
+        double litros = km/this.autonomia_km_l ; 
+        if(litros<=this.tanque_atual){
+            this.tanque_atual -= litros;
+            this.km_rodado += litros;
+            return true;
+        }
+        return false;
     }
     private boolean validarProp(double prop){
         if(prop<=0 ){
