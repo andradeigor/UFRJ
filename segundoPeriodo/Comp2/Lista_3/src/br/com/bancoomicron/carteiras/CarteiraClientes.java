@@ -1,7 +1,8 @@
 package br.com.bancoomicron.carteiras;
 
 import br.com.bancoomicron.pessoas.Cliente;
-
+import br.com.bancoomicron.carteiras.CarteiraContas;
+import br.com.bancoomicron.contas.IConta;
 import java.util.ArrayList;
 
 public class CarteiraClientes implements IAuditoria {
@@ -31,7 +32,7 @@ public class CarteiraClientes implements IAuditoria {
 
     public void adicionarCliente(Cliente c) {
         int verifica = getIndicePorCPF(c.getCpf());
-        if(verifica == -1){
+        if(verifica != -1){
             throw new IllegalArgumentException("Cliente já possui uma carteira");
         }else{
             this.clientes.add(c);
@@ -57,7 +58,18 @@ public class CarteiraClientes implements IAuditoria {
             return true;
         }
     }
-
+    public CarteiraContas geraCarteiraContas(){
+        CarteiraContas Carteiras = new CarteiraContas();
+        for (int i = 0; i < this.clientes.size(); i++) {
+            Cliente c = this.clientes.get(i);
+            CarteiraContas c_contas = c.getContas();
+            ArrayList<IConta> Lista_de_contas = c_contas.getContasList();
+            for (int j = 0; j < Lista_de_contas.size(); j++) {
+                Carteiras.adicionarConta(Lista_de_contas.get(j));
+            }
+        }
+        return Carteiras;
+    }
     public int removerCliente(String[] cpfs) {
         int cnt = 0;
         for (int i=0;i<cpfs.length;++i) {

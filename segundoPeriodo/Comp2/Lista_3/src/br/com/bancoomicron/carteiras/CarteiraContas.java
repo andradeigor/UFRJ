@@ -18,7 +18,9 @@ public class CarteiraContas implements IAuditoria {
     public int quantidadeContas() {
         return this.tamanho();
     }
-
+    public ArrayList<IConta> getContasList(){
+        return this.contas;
+    }
     public double somaSaldo() {
         double soma = 0;
         for (int i=0;i<this.contas.size();++i) {

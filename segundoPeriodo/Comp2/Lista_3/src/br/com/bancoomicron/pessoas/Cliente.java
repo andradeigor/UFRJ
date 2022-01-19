@@ -2,7 +2,6 @@ package br.com.bancoomicron.pessoas;
 
 import br.com.bancoomicron.carteiras.CarteiraContas;
 import br.com.bancoomicron.contas.IConta;
-import java.util.ArrayList;
 
 public class Cliente extends Pessoa {
 
@@ -41,6 +40,7 @@ public class Cliente extends Pessoa {
         this.contas.adicionarConta(c);
     }
 
+    public CarteiraContas getContas(){return this.contas;}
     public boolean removerConta(int numero_conta) {
         return this.contas.removerConta(numero_conta);
     }
