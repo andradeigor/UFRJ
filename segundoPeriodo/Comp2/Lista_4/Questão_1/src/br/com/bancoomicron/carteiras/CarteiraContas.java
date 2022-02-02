@@ -1,14 +1,16 @@
 package br.com.bancoomicron.carteiras;
 
 import br.com.bancoomicron.contas.IConta;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class CarteiraContas implements IAuditoria {
 
-    private ArrayList<IConta> contas;
+    private Set<IConta> contas;
 
     public CarteiraContas() {
-        this.contas = new ArrayList<>();
+        this.contas = new HashSet<>();
     }
 
     public int tamanho() {
@@ -21,8 +23,7 @@ public class CarteiraContas implements IAuditoria {
 
     public double somaSaldo() {
         double soma = 0;
-        for (int i=0;i<this.contas.size();++i) {
-            IConta c = this.contas.get(i);
+        for (IConta c: contas) {
             soma += c.getSaldo();
         }
         return soma;
@@ -33,17 +34,21 @@ public class CarteiraContas implements IAuditoria {
     }
 
     public boolean removerConta(int numero) {
-        for (int i=0;i<this.contas.size();++i) {
-            IConta c = this.contas.get(i);
+        for (IConta c : contas) {
             if (c.getNumero() == numero) {
-                this.contas.remove(i);
+                this.contas.remove(c);
                 return true;
             }
         }
         return false;
     }
 
-    public IConta getConta(int index) {
-        return this.contas.get(index);
+    public IConta getConta(int numero) {
+        for(IConta c: contas){
+            if(c.getNumero() == numero){
+                return c;
+            }
+        }
+        return null;
     }
 }

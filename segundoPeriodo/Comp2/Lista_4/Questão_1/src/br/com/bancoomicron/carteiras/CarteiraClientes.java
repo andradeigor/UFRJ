@@ -3,19 +3,19 @@ package br.com.bancoomicron.carteiras;
 import br.com.bancoomicron.pessoas.Cliente;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CarteiraClientes implements IAuditoria {
 
-    private ArrayList<Cliente> clientes;
+    private Set<Cliente> clientes;
     public CarteiraClientes() {
-        this.clientes = new ArrayList<>();
+        this.clientes = new HashSet<Cliente>();
     }
 
     public int quantidadeContas() {
         int cnt = 0;
-        for (int i = 0;i<this.clientes.size();++i) {
-            Cliente c = this.clientes.get(i);
+        for (Cliente c: clientes) {
             cnt += c.numContas();
         }
         return cnt;
@@ -23,35 +23,31 @@ public class CarteiraClientes implements IAuditoria {
 
     public double somaSaldo() {
         double soma = 0;
-        for (int i=0;i<this.clientes.size();++i) {
-            Cliente c = this.clientes.get(i);
+        for (Cliente c: clientes) {
             soma += c.somaSaldos();
         }
         return soma;
     }
 
     public void adicionarCliente(Cliente c) throws InvalidParameterException {
-        for (int i=0;i<this.clientes.size();++i) {
-            if (c.equals(this.clientes.get(i))) {
-                throw new InvalidParameterException("O cliente já pertence a essa carteira!");
-            }
+        boolean TemCliente = clientes.add(c);
+        if(!TemCliente){
+            throw new InvalidParameterException("O cliente já pertence a essa carteira!");
         }
-        this.clientes.add(c);
     }
 
-    private int getIndicePorCPF(String cpf) {
-        for (int i=0;i<this.clientes.size();++i) {
-            Cliente c = this.clientes.get(i);
-            if (c.getCpf().equals(cpf)) {
-                return i;
+    private Cliente getClientePorCPF(String cpf) {
+        for(Cliente c: clientes){
+            if(c.getCpf().equals(cpf)){
+                return c; 
             }
         }
-        return -1;
+        return null;
     }
 
     public boolean removerCliente(String cpf) {
-        int i = this.getIndicePorCPF(cpf);
-        if (i < 0) {
+        Cliente i = this.getClientePorCPF(cpf);
+        if (i==null) {
             return false;
         } else {
             this.clientes.remove(i);
@@ -70,9 +66,9 @@ public class CarteiraClientes implements IAuditoria {
     }
 
     public Cliente buscaCPF(String cpf) {
-        int i = this.getIndicePorCPF(cpf);
-        if (i >= 0) {
-            return this.clientes.get(i);
+        Cliente i = this.getClientePorCPF(cpf);
+        if (i!=null) {
+            return i;
         } else {
             return null;
         }
@@ -80,8 +76,8 @@ public class CarteiraClientes implements IAuditoria {
 
     public CarteiraContas getContasClientes() {
         CarteiraContas contas = new CarteiraContas();
-        for (int i=0;i<this.clientes.size();++i) {
-            CarteiraContas contas_cliente = this.clientes.get(i).getCarteiraContas();
+        for (Cliente c: clientes) {
+            CarteiraContas contas_cliente = c.getCarteiraContas();
             for (int j=0;j<contas_cliente.tamanho();++j) {
                 contas.adicionarConta(contas_cliente.getConta(j));
             }
