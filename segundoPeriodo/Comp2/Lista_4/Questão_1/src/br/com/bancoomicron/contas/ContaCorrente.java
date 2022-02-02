@@ -1,6 +1,5 @@
 package br.com.bancoomicron.contas;
 
-import java.io.FileNotFoundException;
 
 public class ContaCorrente implements IConta {
 

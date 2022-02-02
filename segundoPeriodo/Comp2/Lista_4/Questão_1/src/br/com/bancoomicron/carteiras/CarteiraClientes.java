@@ -1,10 +1,12 @@
 package br.com.bancoomicron.carteiras;
 
+import br.com.bancoomicron.contas.IConta;
 import br.com.bancoomicron.pessoas.Cliente;
 
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.Set;
+
 
 public class CarteiraClientes implements IAuditoria {
 
@@ -30,16 +32,16 @@ public class CarteiraClientes implements IAuditoria {
     }
 
     public void adicionarCliente(Cliente c) throws InvalidParameterException {
-        boolean TemCliente = clientes.add(c);
-        if(!TemCliente){
+        if(this.getClientePorCPF(c.getCpf())!=null){
             throw new InvalidParameterException("O cliente já pertence a essa carteira!");
         }
+        clientes.add(c);
     }
 
     private Cliente getClientePorCPF(String cpf) {
         for(Cliente c: clientes){
             if(c.getCpf().equals(cpf)){
-                return c; 
+                return c;   
             }
         }
         return null;
@@ -47,12 +49,7 @@ public class CarteiraClientes implements IAuditoria {
 
     public boolean removerCliente(String cpf) {
         Cliente i = this.getClientePorCPF(cpf);
-        if (i==null) {
-            return false;
-        } else {
-            this.clientes.remove(i);
-            return true;
-        }
+        return i!=null? this.clientes.remove(i): false;
     }
 
     public int removerCliente(String[] cpfs) {
@@ -77,9 +74,9 @@ public class CarteiraClientes implements IAuditoria {
     public CarteiraContas getContasClientes() {
         CarteiraContas contas = new CarteiraContas();
         for (Cliente c: clientes) {
-            CarteiraContas contas_cliente = c.getCarteiraContas();
-            for (int j=0;j<contas_cliente.tamanho();++j) {
-                contas.adicionarConta(contas_cliente.getConta(j));
+            Set<IConta> contas_cliente = c.getCarteiraContas().getContas();
+            for (IConta conta_cliente:contas_cliente) {
+                contas.adicionarConta(conta_cliente);
             }
         }
         return contas;

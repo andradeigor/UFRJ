@@ -3,7 +3,6 @@ package br.com.bancoomicron.pessoas;
 import br.com.bancoomicron.carteiras.CarteiraContas;
 import br.com.bancoomicron.contas.IConta;
 
-import java.util.ArrayList;
 
 public class Cliente extends Pessoa {
 

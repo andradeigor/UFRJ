@@ -51,4 +51,7 @@ public class CarteiraContas implements IAuditoria {
         }
         return null;
     }
+    public Set<IConta> getContas(){
+        return this.contas;
+    }
 }
