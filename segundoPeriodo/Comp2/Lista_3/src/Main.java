@@ -1,8 +1,13 @@
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 import br.com.bancoomicron.carteiras.CarteiraContas;
 import br.com.bancoomicron.carteiras.CarteiraClientes;
 import br.com.bancoomicron.contas.*;
 import br.com.bancoomicron.pessoas.Auditor;
 import br.com.bancoomicron.pessoas.Cliente;
+
 
 public class Main {
     public static void main(String[] args) {

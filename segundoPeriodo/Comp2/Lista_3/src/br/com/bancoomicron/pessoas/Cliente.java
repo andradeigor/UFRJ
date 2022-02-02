@@ -1,3 +1,9 @@
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
+
+
 package br.com.bancoomicron.pessoas;
 
 import br.com.bancoomicron.carteiras.CarteiraContas;
@@ -41,6 +47,7 @@ public class Cliente extends Pessoa {
     }
 
     public CarteiraContas getContas(){return this.contas;}
+    
     public boolean removerConta(int numero_conta) {
         return this.contas.removerConta(numero_conta);
     }

@@ -1,0 +1,266 @@
+Menu principal
+ICP240 Computação II (CC)
+2021.2 Seg, Qua e Sex de 08 h às 10 h
+Exercício 4 - Arquivos e Coleções [ATUALIZADO EM 29/01]
+Jose Augusto Sapienza Ramos
+•
+28 de jan. Editado às 29 de jan.
+100 pontos
+Data de entrega: 4 de fev. 23:59
+[ATUALIZAÇÃO EM 29/01] O enunciado a questão 1 foi complementado de forma a deixar explícito como o método CarteiraClientes.getIndicePorCPF deve ser adaptado.
+
+
+Entregue os arquivos do projeto Intellij com as implementações solicitadas no PDF em anexo. Lembre-se de inserir um comentário
+na primeira linha de cada arquivo .java com o seu nome e DRE.
+
+Após realizar o upload da sua resposta clique em Marcar como concluída.
+
+Entregas atrasadas não valerão pontos.
+
+stop_words.txt
+Texto
+
+Exercicio 4 - Arquivos e Coleções.pdf
+PDF
+3 comentários para a turma
+
+Mariana Furriel da Silva Siqueira30 de jan.
+Na questão 1, o que deve ser retornado no metodo CarteiraClientes.getClientePorCpf se o cpf nao existir?
+
+Jose Augusto Sapienza Ramos31 de jan.
+Deve retornar null
+
+Abid Lohan31 de jan.
+Oi professor, na questão 2, na hora de remover as stop words, não ta dando para remover todas elas. 
+
+Por exemplo, a palavra "COMO" é removida tranquilamente com o método que eu fiz, mas a palavra "SÓ" não é removida, suspeito que seja algo a ver com o acento, já que quando eu seleciono no terminal, ele me diz que "SÓ" tem 3 caracteres. Inclusive se eu for diretamente no map e der um .remove("SÓ"), ele não remove. 
+
+Acredito que por algum motivo ele esteja considerando "SÓ" do Tabacaria com esses 3 caracteres e na hora de comparar com o "SÓ" das stop words ou o "SÓ" que eu digito ele pensa que são diferentes.
+
+Sabe por que isso acontece? O que eu posso fazer?
+
+Seus trabalhos
+Atribuído
+Comentários particulares
+Exercício 4 - Arquivos e Coleções [ATUALIZADO EM 29/01]
+de 
+a 
+o 
+que 
+e 
+do 
+da 
+em 
+um 
+para 
+é 
+com 
+não 
+uma 
+os 
+no 
+se 
+na 
+por 
+mais 
+as 
+dos 
+como 
+mas 
+foi 
+ao 
+ele 
+das 
+tem 
+à 
+seu 
+sua 
+ou 
+ser 
+quando 
+muito 
+há 
+nos 
+já 
+está 
+eu 
+também 
+só 
+pelo 
+pela 
+até 
+isso 
+ela 
+entre 
+era 
+depois 
+sem 
+mesmo 
+aos 
+ter 
+seus 
+quem 
+nas 
+me 
+esse 
+eles 
+estão 
+você 
+tinha 
+foram 
+essa 
+num 
+nem 
+suas 
+meu 
+às 
+minha 
+têm 
+numa 
+pelos 
+elas 
+havia 
+seja 
+qual 
+será 
+nós 
+tenho 
+lhe 
+deles 
+essas 
+esses 
+pelas 
+este 
+fosse 
+dele 
+tu 
+te 
+vocês 
+vos 
+lhes 
+meus 
+minhas
+teu 
+tua
+teus
+tuas
+nosso 
+nossa
+nossos
+nossas
+dela 
+delas 
+esta 
+estes 
+estas 
+aquele 
+aquela 
+aqueles 
+aquelas 
+isto 
+aquilo 
+estou
+está
+estamos
+estão
+estive
+esteve
+estivemos
+estiveram
+estava
+estávamos
+estavam
+estivera
+estivéramos
+esteja
+estejamos
+estejam
+estivesse
+estivéssemos
+estivessem
+estiver
+estivermos
+estiverem
+hei
+há
+havemos
+hão
+houve
+houvemos
+houveram
+houvera
+houvéramos
+haja
+hajamos
+hajam
+houvesse
+houvéssemos
+houvessem
+houver
+houvermos
+houverem
+houverei
+houverá
+houveremos
+houverão
+houveria
+houveríamos
+houveriam
+sou
+somos
+são
+era
+éramos
+eram
+fui
+foi
+fomos
+foram
+fora
+fôramos
+seja
+sejamos
+sejam
+fosse
+fôssemos
+fossem
+for
+formos
+forem
+serei
+será
+seremos
+serão
+seria
+seríamos
+seriam
+tenho
+tem
+temos
+tém
+tinha
+tínhamos
+tinham
+tive
+teve
+tivemos
+tiveram
+tivera
+tivéramos
+tenha
+tenhamos
+tenham
+tivesse
+tivéssemos
+tivessem
+tiver
+tivermos
+tiverem
+terei
+terá
+teremos
+terão
+teria
+teríamos
+teriam
+

@@ -1,24 +1,34 @@
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
+
 package br.com.bancoomicron.pessoas;
 
-import java.util.ArrayList;
 
 import br.com.bancoomicron.carteiras.CarteiraClientes;
 import br.com.bancoomicron.carteiras.CarteiraContas;
 import br.com.bancoomicron.carteiras.IAuditoria;
 
 public class Gerente extends Pessoa implements IAuditoria {
-    public CarteiraClientes carteira_clientes;
+    private CarteiraClientes carteiraClientes;
     public Gerente(String cpf, String nome){
         super(cpf,nome);
-        this.carteira_clientes = new CarteiraClientes();
+        this.carteiraClientes = new CarteiraClientes();
+    }
+    public void adicionarClienteGerente(Cliente C){
+        carteiraClientes.adicionarCliente(C);
     }
 
     public int quantidadeContas(){
-        CarteiraContas Contas = carteira_clientes.geraCarteiraContas();
+        CarteiraContas Contas = carteiraClientes.geraCarteiraContas();
         return Contas.quantidadeContas();
     }
     public double somaSaldo(){
-        CarteiraContas Contas = carteira_clientes.geraCarteiraContas();
+        CarteiraContas Contas = carteiraClientes.geraCarteiraContas();
         return Contas.somaSaldo();
+    }
+    public void removeClienteGerente(String cpf){
+        carteiraClientes.removerCliente(cpf);
     }
 }
