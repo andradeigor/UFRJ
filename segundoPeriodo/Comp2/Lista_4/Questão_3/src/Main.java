@@ -4,12 +4,15 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        long Numero = 598134021;
+        long Numero = 9000010011l;
         System.out.println(Main.numeroParaTexto(Numero));
     }
     public static String numeroParaTexto(long Numero){
         String string_number = String.valueOf(Numero);
         Integer base = string_number.length()-1;
+        if(base >=12){
+            return "Um Trilhão";
+        }
         Map<String, String> string_numeros = new HashMap<>();
         string_numeros.put("0",""); string_numeros.put("00","");        string_numeros.put("000","");
 
@@ -29,42 +32,67 @@ public class Main {
         string_numeros.put("900", "Novecentos ");
         String numero_estenso = "";
         for(char c:string_number.toCharArray()){
-            Integer num = (int) (Character.getNumericValue(c) * Math.pow(10, base));
+            Long num = (long) (Character.getNumericValue(c) * Math.pow(10, base));
             if((double) (base+1)/3 <=1){
-                if((base+1)%3==0){
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                    if(base+1>3){
-    
+                if(num!=0){
+                    if((base+1)%3==0){
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                        if(base+1>3){
+        
+                        }
+                    }else if ((base+1)%3==2) {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                    } else {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + " ");
                     }
-                }else if ((base+1)%3==2) {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                } else {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + " ");
                 }
 
             }else if((double)(base+1)/3>1 && (double) (base+1)/3<=2 ){
                 num = num/(int) Math.pow(10,3);
-                if((base+1)%3==0){
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                    if(base+1>3){
-    
+                if(num!=0){
+                    if((base+1)%3==0){
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                        if(base+1>3){
+        
+                        }
+                    }else if ((base+1)%3==2) {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                    } else {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "Mil e ");
                     }
-                }else if ((base+1)%3==2) {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                } else {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "Mil ");
+
                 }
             }else if((double)(base+1)/3>2 && (double) (base+1)/3<=3 ){
                 num = num/(int) Math.pow(10,6);
-                if((base+1)%3==0){
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                    if(base+1>3){
-    
+                if(num!=0){
+                    if((base+1)%3==0){
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                        if(base+1>3){
+        
+                        }
+                    }else if ((base+1)%3==2) {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                    } else {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "Milhões, ");
                     }
-                }else if ((base+1)%3==2) {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "e ");
-                } else {
-                    numero_estenso += (string_numeros.get(Integer.toString(num)) + "Milhões ");
+
+                }
+            }
+            else if((double)(base+1)/3>3 && (double) (base+1)/3<=4 ){
+                System.out.println(num);
+                num = num/(int) Math.pow(10,9);
+                if(num!=0){
+                    if((base+1)%3==0){
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                        if(base+1>3){
+        
+                        }
+                    }else if ((base+1)%3==2) {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+                    } else {
+                        numero_estenso += (string_numeros.get(Long.toString(num)) + "Bilhões, ");
+                    }
+
                 }
             }
             base-=1;
