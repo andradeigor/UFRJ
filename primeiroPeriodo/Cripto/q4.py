@@ -14,7 +14,7 @@ def divisoresPositivos(numero):
 
 def aux(n):
     dicDivisores = {}
-    listaAltamenteCompostos = []R
+    listaAltamenteCompostos = []
     for i in range(1,n+1):#começa pelo 1 e vai até numero, +1 por conta do off by one
         divisores = divisoresPositivos(i)
         dicDivisores[i] = divisores
