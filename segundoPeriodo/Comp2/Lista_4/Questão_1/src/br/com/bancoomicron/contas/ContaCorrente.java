@@ -1,6 +1,9 @@
 package br.com.bancoomicron.contas;
 
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 public class ContaCorrente implements IConta {
 
     protected double saldo;

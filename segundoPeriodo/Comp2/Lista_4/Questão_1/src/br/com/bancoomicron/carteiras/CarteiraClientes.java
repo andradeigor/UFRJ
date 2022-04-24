@@ -1,5 +1,8 @@
 package br.com.bancoomicron.carteiras;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 import br.com.bancoomicron.contas.IConta;
 import br.com.bancoomicron.pessoas.Cliente;
 
@@ -63,12 +66,7 @@ public class CarteiraClientes implements IAuditoria {
     }
 
     public Cliente buscaCPF(String cpf) {
-        Cliente i = this.getClientePorCPF(cpf);
-        if (i!=null) {
-            return i;
-        } else {
-            return null;
-        }
+       return this.getClientePorCPF(cpf);
     }
 
     public CarteiraContas getContasClientes() {

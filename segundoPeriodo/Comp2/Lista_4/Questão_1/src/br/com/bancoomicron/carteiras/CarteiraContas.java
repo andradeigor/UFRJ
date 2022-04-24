@@ -1,5 +1,8 @@
 package br.com.bancoomicron.carteiras;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 import br.com.bancoomicron.contas.IConta;
 import java.util.HashSet;
 import java.util.Set;

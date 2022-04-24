@@ -1,14 +1,19 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 public class Main {
     public static void main(String[] args) {
         long Numero = 9000010011l;
         System.out.println(Main.numeroParaTexto(Numero));
     }
     public static String numeroParaTexto(long Numero){
+
         String string_number = String.valueOf(Numero);
+        System.out.println(string_number);
         Integer base = string_number.length()-1;
         if(base >=12){
             return "Um Trilhão";
@@ -32,16 +37,15 @@ public class Main {
         string_numeros.put("900", "Novecentos ");
         String numero_estenso = "";
         for(char c:string_number.toCharArray()){
+
             Long num = (long) (Character.getNumericValue(c) * Math.pow(10, base));
             if((double) (base+1)/3 <=1){
                 if(num!=0){
                     if((base+1)%3==0){
                         numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
-                        if(base+1>3){
-        
-                        }
                     }else if ((base+1)%3==2) {
                         numero_estenso += (string_numeros.get(Long.toString(num)) + "e ");
+
                     } else {
                         numero_estenso += (string_numeros.get(Long.toString(num)) + " ");
                     }
@@ -79,7 +83,6 @@ public class Main {
                 }
             }
             else if((double)(base+1)/3>3 && (double) (base+1)/3<=4 ){
-                System.out.println(num);
                 num = num/(int) Math.pow(10,9);
                 if(num!=0){
                     if((base+1)%3==0){

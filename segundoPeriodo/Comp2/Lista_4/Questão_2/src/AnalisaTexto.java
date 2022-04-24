@@ -2,7 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 public class AnalisaTexto {
 
     private String texto;
@@ -87,13 +90,13 @@ public class AnalisaTexto {
         ArrayList<String> palavras = this.quebrarTextoEmPalavras();
         String string_stop_words = "";
         try {
-            FileReader leitorarq = new FileReader("/home/igor/COMP/UFRJ/segundoPeriodo/Comp2/Lista_4/Questão_2/stop_words.txt");
-            BufferedReader leitorbuf = new BufferedReader(leitorarq);
-            String linha = leitorbuf.readLine();
+            FileReader leitorarq2 = new FileReader("../stop_words.txt");
+            BufferedReader leitorbuf2 = new BufferedReader(leitorarq2);
+            String linha = leitorbuf2.readLine();
             String texto_nao_tratado = "";
             while (linha != null) {
                 texto_nao_tratado += linha + " ";
-                linha = leitorbuf.readLine();
+                linha = leitorbuf2.readLine();
             }
             string_stop_words = this.tratarTexto(texto_nao_tratado);
         } catch (IOException ioe) {

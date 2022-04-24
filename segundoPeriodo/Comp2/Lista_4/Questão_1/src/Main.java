@@ -2,7 +2,10 @@ import br.com.bancoomicron.carteiras.CarteiraContas;
 import br.com.bancoomicron.contas.*;
 import br.com.bancoomicron.pessoas.Auditor;
 import br.com.bancoomicron.pessoas.Cliente;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 public class Main {
     public static void main(String[] args) {
         CarteiraContas carteira = new CarteiraContas();

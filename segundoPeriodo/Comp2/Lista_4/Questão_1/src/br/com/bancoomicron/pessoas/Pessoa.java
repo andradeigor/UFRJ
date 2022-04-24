@@ -1,5 +1,8 @@
 package br.com.bancoomicron.pessoas;
-
+/*
+Nome: Igor de Andrade Assunção de Almeida
+DRE:121095736
+*/
 abstract public class Pessoa {
     protected String cpf;
     protected String nome;
