@@ -93,8 +93,13 @@ void mergeSort( int *array ,int inicial, int final){
 }
 
 int main(int argc, char const *argv[]){
-    int i, j=20,max=1000;
+    int i, j=20,max=10;
     int *vetorK;
+    for (i = 0; i < argc; i++){
+        fputs(argv[i], stdout);    
+        printf("\n");
+    }
+    
     srand(time(NULL));
     vetorK = (int *) malloc (j*sizeof( int ));
 
