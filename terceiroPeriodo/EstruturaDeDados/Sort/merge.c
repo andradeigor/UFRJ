@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 void boobleSort(int *array, int tamanho){
     int i,j ,temp;
@@ -93,27 +94,54 @@ void mergeSort( int *array ,int inicial, int final){
 }
 
 int main(int argc, char const *argv[]){
-    int i, j=20,max=10;
+    int i, temp,method=0,vectorSize=10,max=1000;
     int *vetorK;
-    for (i = 0; i < argc; i++){
-        fputs(argv[i], stdout);    
-        printf("\n");
+    for (i = 1; i < argc; i++){
+        if(!strcmp(argv[i], "-n")){
+            if(i+1 <argc){
+                temp = atoi(argv[i+1]);
+                if(temp){
+                    vectorSize = temp;
+                }
+            }
+            
+        }
+        if(!strcmp(argv[i], "-m")){
+            method = 1;
+        }
+        if(!strcmp(argv[i], "-q")){
+            method = 2;
+        }
     }
     
     srand(time(NULL));
-    vetorK = (int *) malloc (j*sizeof( int ));
+    vetorK = (int *) malloc (vectorSize*sizeof( int ));
 
-    for (i = 0; i < j; i++){
+    for (i = 0; i < vectorSize; i++){
         *(vetorK + i) = (rand()%(max+1));
     }
-    for (i = 0; i < j; i++){
+    for (i = 0; i < vectorSize; i++){
         printf("%d ", vetorK[i]);
     }
     printf("\n");
     printf("Virou:");
     printf("\n");
-    quickSort(vetorK, 0,j-1);
-    for (i = 0; i < j; i++){
+    switch (method)
+    {
+    case 1:
+        printf("merge \n");
+        mergeSort(vetorK, 0, vectorSize-1);
+        break;
+    case 2:
+        printf("quick \n");
+        quickSort(vetorK, 0,vectorSize-1);
+        break;
+    default:
+        printf("booble \n");
+        boobleSort(vetorK, vectorSize);
+        break;
+    }
+    for (i = 0; i < vectorSize; i++){
         printf("%d ", vetorK[i]);
     }
     printf("\n");
