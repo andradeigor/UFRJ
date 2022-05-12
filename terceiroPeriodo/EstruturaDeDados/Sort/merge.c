@@ -95,7 +95,9 @@ void mergeSort( int *array ,int inicial, int final){
 
 int main(int argc, char const *argv[]){
     int i, temp,method=0,vectorSize=10,max=1000;
+    double timeSpend;
     int *vetorK;
+    clock_t t;
     for (i = 1; i < argc; i++){
         if(!strcmp(argv[i], "-n")){
             if(i+1 <argc){
@@ -120,31 +122,29 @@ int main(int argc, char const *argv[]){
     for (i = 0; i < vectorSize; i++){
         *(vetorK + i) = (rand()%(max+1));
     }
+    
+    t = clock();
+    switch (method){
+        case 1:
+            mergeSort(vetorK, 0, vectorSize-1);
+            break;
+        case 2:
+            quickSort(vetorK, 0,vectorSize-1);
+            break;
+        default:
+            boobleSort(vetorK, vectorSize);
+            break;
+    }
+
+    t = clock() -t;
+    timeSpend = ((double)t/CLOCKS_PER_SEC)*1000;
+    printf("[");
     for (i = 0; i < vectorSize; i++){
         printf("%d ", vetorK[i]);
     }
+    printf("]");
     printf("\n");
-    printf("Virou:");
-    printf("\n");
-    switch (method)
-    {
-    case 1:
-        printf("merge \n");
-        mergeSort(vetorK, 0, vectorSize-1);
-        break;
-    case 2:
-        printf("quick \n");
-        quickSort(vetorK, 0,vectorSize-1);
-        break;
-    default:
-        printf("booble \n");
-        boobleSort(vetorK, vectorSize);
-        break;
-    }
-    for (i = 0; i < vectorSize; i++){
-        printf("%d ", vetorK[i]);
-    }
-    printf("\n");
+    printf("#O programa levou %f ms\n", timeSpend);
     free(vetorK);
     return 0;
 }
