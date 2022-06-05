@@ -16,13 +16,13 @@ class Pilha{
         int push(float value);
         float pop();
         float top();
+        int isEmpty();
 };
 
 int Pilha::push(float value){
     if(size == 0){
-        ptno *new_node = new ptno;
         topo->value = value;
-        topo->next = new_node;
+        topo->next = NULL;
         size++;
         return 0;
     }else{
@@ -43,19 +43,34 @@ float Pilha::pop(){
         return 0;
     }else{
         float value = topo->value;
-        ptno *aux = topo;
-        topo = topo->next;
-        free(aux);
-        return value;
+        if(size == 1){
+            ptno *aux = topo;
+            topo = new ptno;
+            size--;
+            return value;
+        }else{
+            ptno *aux = topo;
+            topo = topo->next;
+            free(aux);
+            size--;
+            return value;
+        }
     }
+}
+int Pilha::isEmpty(){
+    return size == 0;
 }
 
 int main(int argc, char const *argv[]){
     Pilha pilha;
-    float value = pilha.pop();
     pilha.push(1);
     pilha.push(2);
-    cout << pilha.top() << endl;
-    cout << value << endl;
+    cout << pilha.pop() << endl;
+    cout << pilha.pop() << endl;
+    cout << pilha.pop() << endl;
+    pilha.push(3);
+    cout << "o topo da pilha é " << pilha.top() << endl;
+    cout << "o pop foi" << pilha.pop() << endl;
+    cout << "o tamanho atual é " << pilha.isEmpty() << endl;
     return 0;
 }
