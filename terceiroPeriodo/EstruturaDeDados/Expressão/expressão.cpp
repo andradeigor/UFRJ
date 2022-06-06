@@ -27,12 +27,17 @@ int Pilha::push(char value){
         size++;
         return 0;
     }else{
-        ptno *new_no = new ptno;
+        ptno *new_no = (ptno *) malloc(sizeof(ptno));
+        if(new_no){
         new_no->value = value;
         new_no->next = topo;
         topo = new_no;
         size++;
         return 0;
+        }else{
+            cout << "Sem memória" << endl;
+            return 1;
+        }
     }
 }
 char Pilha::top(){
@@ -45,14 +50,12 @@ char Pilha::pop(){
     }else{
         char value = topo->value;
         if(size == 1){
-            if(topo){
-                free(topo);
-            }
-            topo = new ptno;
+            topo = (ptno *) malloc(sizeof(ptno));
             size--;
             return value;
         }else{
-            ptno *aux = topo;
+            ptno *aux = (ptno *) malloc(sizeof(ptno));
+            aux = topo;
             topo = topo->next;
             if(aux){
                 free(aux);
@@ -99,97 +102,50 @@ int operatorToInt(char op){
         return 0;
     }
 }
-Pilha InvertePilha(Pilha pilha){
-    Pilha PilhaInvertida;
-    while(!pilha.isEmpty()){
-        PilhaInvertida.push(pilha.pop());
-    }
-    return PilhaInvertida;
-}
 
-/*string toPosFix(string expression){
-    stack<char> pilha;
-    string posfix = "";
-    for(int i = 0; i < expression.length(); i++){
-        if(!isalnum(expression[i])){
-            posfix += expression[i];
-        }
-        else if(expression[i] == '('){
-            pilha.push(expression[i]);
-        }  
-        
-        else if(expression[i] == ')'){
-            while(pilha.top() != '('){
-                posfix += pilha.top(); pilha.pop();
-            }
-            pilha.pop();
-        }
-        else{
-            while(!pilha.empty() && precedencia(pilha.top()) >= precedencia(expression[i])){
-                posfix += pilha.top(); pilha.pop();
-            }
-            pilha.push(expression[i]);
-        }
-        while(!pilha.empty()){
-            posfix += pilha.top(); pilha.pop();
-        }
-    }
-    return posfix;
-}*/
-void infixToPostfix(char *expression[], int expressionSize){
-    stack<char> st; 
+string infixToPostfix(char *expression[], int expressionSize){
+    Pilha pilha; 
     string result;
     
     for (int i = 0; i < expressionSize; i++) {
-        char c = expression[i][0];
+        char digit = expression[i][0];
  
-        // If the scanned character is
-        // an operand, add it to output string.
-        if (isalnum(c)){
+        if (isalnum(digit)){
             result += expression[i];
             result += ' ';
         }
  
-        // If the scanned character is an
-        // ‘(‘, push it to the stack.
-        else if (c == '(')
-            st.push('(');
+        else if (digit == '(')
+            pilha.push('(');
  
-        // If the scanned character is an ‘)’,
-        // pop and to output string from the stack
-        // until an ‘(‘ is encountered.
-        else if (c == ')') {
-            while (st.top() != '(') {
-                result += st.top();
+        else if (digit == ')') {
+            while (pilha.top() != '(') {
+                result += pilha.top();
                 result += ' ';
-                st.pop();
+                pilha.pop();
             }
-            st.pop();
-        }
- 
-        // If an operator is scanned
-        else {
-            while (!st.empty()
-                   && precedencia(expression[i][0]) <= precedencia(st.top())) {
-                if (c == '^' && st.top() == '^')
+            pilha.pop();
+        }else {
+            while (!pilha.isEmpty()
+                   && precedencia(expression[i][0]) <= precedencia(pilha.top())) {
+                if (digit == '^' && pilha.top() == '^')
                     break;
                 else {
-                    result += st.top();
+                    result += pilha.top();
                     result += ' ';
-                    st.pop();
+                    pilha.pop();
                 }
             }
-            st.push(c);
+            pilha.push(digit);
         }
     }
- 
-    // Pop all the remaining elements from the stack
-    while (!st.empty()) {
-        result += st.top();
-        st.pop();
+    while (!pilha.isEmpty()) {
+        result += pilha.top();
+        result += ' ';
+        pilha.pop();
     }
  
-    cout << result << endl;
+    return result;
 }
 
 void substituteOperators(char *expression, char *result){
@@ -210,27 +166,62 @@ void substituteOperators(char *expression, char *result){
     }
     result[l] = '\0';
 }
+float Evaluate(float a, float b, char op){
+    switch (op){
+    case '+':
+        return a + b;
+    case '-':
+        return a - b;
+    case '*':
+        return a * b;
+    case '/':
+        return b / a;
+    default:
+        return 0;
+    }
+}
 
+float Conta(char *expression){
+    stack<float> numeros;
+    char *digit;
+    digit = strtok(expression, " ");
+    while(digit){
+        if(operatorToInt(digit[0])){
+            float b = numeros.top();
+            numeros.pop();
+            float a = numeros.top();
+            numeros.pop();
+            float result = Evaluate(a, b, digit[0]);
+            numeros.push(result);
+        }
+        else{
+            float numero = atof(digit);
+            numeros.push(numero);
+        }
+        digit = strtok(NULL, " ");
+    }
+    float result = numeros.top();
+    return result;
+}
 
 int main(int argc, char *argv[]){
-    stack<char> numbers;
-    char result[100];
-    char teste[100];
+    char InputTratado[100];
+    char input[100];
     char *digits[30];
     char *digit;
     int i=0;
-    cin >> teste;
-    substituteOperators(teste, result);
-    digit = strtok(result, " ");
+    cin >> input;
+    substituteOperators(input, InputTratado);
+    digit = strtok(InputTratado, " ");
     while(digit){
         digits[i] = (char*) malloc(strlen(digit) * sizeof(char));
         strcpy(digits[i], digit);
         digit = strtok(NULL, " ");
         i++;
     }
-    infixToPostfix(digits, i);
-
-    //string posfix = toPosFix(expresion);
-    //cout << posfix << endl;
+    string pósFix = infixToPostfix(digits, i);
+    cout << pósFix << endl;
+    float resultado = Conta((char *) pósFix.c_str());
+    cout << resultado << endl;
    return 0;
 }
