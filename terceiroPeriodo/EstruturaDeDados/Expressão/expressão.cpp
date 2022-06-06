@@ -9,6 +9,10 @@ typedef struct ptno{
     char value;
     struct ptno *next;
 } ptno;
+typedef struct ptno2{
+    float value;
+    struct ptno2 *next;
+} ptno2;
 class Pilha{
     private:
         ptno *topo;
@@ -19,6 +23,7 @@ class Pilha{
         char top();
         int isEmpty();
 };
+
 
 int Pilha::push(char value){
     if(size == 0){
@@ -73,7 +78,70 @@ int Pilha::isEmpty(){
         return 0;
     }
 }
+class Pilha2{
+    private:
+        ptno2 *topo;
+        int size = 0;
+    public:
+        int push(float value);
+        float pop();
+        float top();
+        int isEmpty();
+};
 
+int Pilha2::push(float value){
+    if(size == 0){
+        topo->value = value;
+        topo->next = NULL;
+        size++;
+        return 0;
+    }else{
+        ptno2 *new_no = (ptno2 *) malloc(sizeof(ptno2));
+        if(new_no){
+        new_no->value = value;
+        new_no->next = topo;
+        topo = new_no;
+        size++;
+        return 0;
+        }else{
+            cout << "Sem memória" << endl;
+            return 1;
+        }
+    }
+}
+float Pilha2::top(){
+    return topo->value;
+}
+
+float Pilha2::pop(){
+    if(size == 0){
+        cout << "Pilha vazia" << endl;
+        return 0;
+    }else{
+        float value = topo->value;
+        if(size == 1){
+            topo = (ptno2 *) malloc(sizeof(ptno2));
+            size--;
+            return value;
+        }else{
+            ptno2 *aux = (ptno2 *) malloc(sizeof(ptno2));
+            aux = topo;
+            topo = topo->next;
+            if(aux){
+                free(aux);
+            }
+            size--;
+            return value;
+        }
+    }
+}
+
+
+
+
+/*
+<--------------------Definição das duas pilhas----------------------->
+*/
 int precedencia(char op){
     if (op == '/' || op == '*')
         return 2;
@@ -182,7 +250,7 @@ float Evaluate(float a, float b, char op){
 }
 
 float Conta(char *expression){
-    stack<float> numeros;
+    Pilha2 numeros;
     char *digit;
     digit = strtok(expression, " ");
     while(digit){
@@ -220,7 +288,6 @@ int main(int argc, char *argv[]){
         i++;
     }
     string pósFix = infixToPostfix(digits, i);
-    cout << pósFix << endl;
     float resultado = Conta((char *) pósFix.c_str());
     cout << resultado << endl;
    return 0;
