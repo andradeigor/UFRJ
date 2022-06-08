@@ -287,8 +287,8 @@ int main(int argc, char *argv[]){
         digit = strtok(NULL, " ");
         i++;
     }
-    string pósFix = infixToPostfix(digits, i);
-    float resultado = Conta((char *) pósFix.c_str());
+    string posFix = infixToPostfix(digits, i);
+    float resultado = Conta((char *) posFix.c_str());
     cout << resultado << endl;
    return 0;
 }
