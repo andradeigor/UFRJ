@@ -7,16 +7,24 @@
 using namespace std;
 
 
-int splitLine(string line,int poss ){
+int splitLine(string line,int poss, int **adj){
     string temp="";
-    for (int i = 0; i < line.size(); i++){
-        if(line[i] != (char) " " ){
+    int i=0;
+    for (int i = 0; i < (int)line.size(); i++){
+        if(line[i] != ' ' ){
             temp += line[i];
         }else{
             cout << temp << endl;
+            adj[poss][i] = stoi(temp);
             temp = "";
         }
     }
+        adj[poss][i] = stoi(temp);
+        i++;
+        for (int j = 0; j < i; j++){
+            cout << adj[poss][j] << " ";
+        }
+        cout << endl;
     return 0;
 }
 
@@ -26,13 +34,13 @@ int main(int argc, char const *argv[]){
     getline(cin,s);
     char *line;
     int size = s[0] - 48;
-    cout << size << endl;
+    int **adj = (int **) malloc(sizeof(int) * size) ;
+    for(int i=0; i<size;i++){
+        adj[i] = (int *) malloc(sizeof(int) * size);
+    }
     while(getline(cin,s)){
-        splitLine(line, 1);
-        while(line){
-            cout << line << endl;
-            line = strtok(NULL, " ");
-        }
+        splitLine(s, 1, adj);
+        
     }
     return 0;
 }
