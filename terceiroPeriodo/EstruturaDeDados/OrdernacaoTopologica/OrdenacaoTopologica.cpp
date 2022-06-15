@@ -9,19 +9,21 @@ using namespace std;
 
 int splitLine(string line,int poss, int **adj){
     string temp="";
+    cout << line << endl;
     int i=0;
+    int k=0;
     for (int i = 0; i < (int)line.size(); i++){
         if(line[i] != ' ' ){
             temp += line[i];
         }else{
-            cout << temp << endl;
-            adj[poss][i] = stoi(temp);
+            adj[poss][k] = stoi(temp);
+            k++;
             temp = "";
         }
     }
-        adj[poss][i] = stoi(temp);
-        i++;
-        for (int j = 0; j < i; j++){
+        adj[poss][k] = stoi(temp);
+        k++;
+        for (int j = 0; j < k; j++){
             cout << adj[poss][j] << " ";
         }
         cout << endl;
@@ -39,7 +41,7 @@ int main(int argc, char const *argv[]){
         adj[i] = (int *) malloc(sizeof(int) * size);
     }
     while(getline(cin,s)){
-        splitLine(s, 1, adj);
+        splitLine(s, 0, adj);
         
     }
     return 0;
