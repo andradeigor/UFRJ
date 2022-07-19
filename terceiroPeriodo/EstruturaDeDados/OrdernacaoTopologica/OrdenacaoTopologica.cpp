@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]){
     int size, index=0;
     getline(cin,s);
     size = s[0] - 48;
-    int **adj = (int **) malloc(sizeof(int) * size);
+    int **adj = (int **) malloc(sizeof(int*) * size);
 
     int conectionNumber[size];
     int adjNumber[size];
