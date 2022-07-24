@@ -81,12 +81,51 @@ void mergeSort( Aresta *array ,int inicial, int final){
     }
 }
 
+int find(Grupo *grupos, int i){
+    if(grupos[i].pai != i ){
+        grupos[i].pai = find(grupos, grupos[i].pai);// compressão de caminhos
+    }
+    return grupos[i].pai;
+}
+
+void Union(Grupo *grupos, int pai1, int pai2){
+    if(grupos[pai1].tam < grupos[pai2].tam){
+        grupos[pai1].pai = pai2;
+        grupos[pai2].tam += grupos[pai1].tam; 
+    }else{
+        grupos[pai2].pai = pai1;
+        grupos[pai1].tam += grupos[pai2].tam;
+    }
+}
+
+void KruskalAGM(Grafo grafo){
+
+    struct Grupo *ListaGrupos = (Grupo *) malloc((sizeof(Grupo) * grafo.vertices)+1);// + 1 pq os vertices começam em 1 então vou começar em 1 o indice pra minha cabeça não surtar
+    
+    for(int i=1; i<=grafo.vertices; i++){
+        ListaGrupos[i].pai = i;
+        ListaGrupos[i].tam = 1;
+    }
+    int Minimo =0;
+    for(int i=0; i<grafo.arestas; i++){
+        Aresta currentArresta = grafo.ArestasList[i];
+        int pai1 = find(ListaGrupos, currentArresta.vertice_1);
+        int pai2 = find(ListaGrupos, currentArresta.vertice_2);
+
+        if(pai1!= pai2){
+            Union(ListaGrupos, pai1, pai2);
+            Minimo += currentArresta.peso;
+        }
+    }
+    cout << Minimo << endl;
+
+}
+
+
 int main(){
     int vertices, arestas;
     scanf("%d %d\n", &vertices, &arestas);
     Grafo MainGrafo(arestas, vertices);
-    printf("Li vertices = %d e arestas = %d\n",vertices,arestas);
-    struct Grupo *ListaGrupos = (Grupo *) malloc((sizeof(Grupo) * vertices)+1);// + 1 pq os vertices começam em 1 então vou começar em 1 o indice pra minha cabeça não surtar
     for(int i =0; i<arestas; i++){
         int vertice1, vertice2, peso;
         scanf("%d %d %d", &vertice1 ,&vertice2,&peso);
@@ -94,12 +133,9 @@ int main(){
         NewAresta.vertice_1 = vertice1;
         NewAresta.vertice_2 = vertice2;
         NewAresta.peso = peso; 
-        //cout << "Li a arestar " << i+1 << " seu peso é: " << peso << " o primeiro vertice é " << vertice1 << " o segundo vertice é " << vertice2 << endl; 
         MainGrafo.ArestasList[i] = NewAresta;
     }
-    mergeSort(MainGrafo.ArestasList, 0, arestas-1);
-    for(int i=0; i<arestas;i++){
-        cout << MainGrafo.ArestasList[i].vertice_1 << " " << MainGrafo.ArestasList[i].vertice_2 << " " << MainGrafo.ArestasList[i].peso << endl;
-    }
+    mergeSort(MainGrafo.ArestasList, 0, MainGrafo.arestas-1);
+    KruskalAGM(MainGrafo);
     return 0;
 }
