@@ -1,75 +1,70 @@
-// Name: Igor de Andrade Assunção de Almeida
-//Dre: 121095736
-#include <iostream>
-#include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
+#include <iostream>
 
 using namespace std;
 
+int main(){
+    char *linha = NULL;
+    size_t tamLinha = 0;
+    int vertices, arestas;
+    scanf("%d %d\n", &vertices, &arestas);
 
-int splitLine(string line,int poss, int **adj, int *adjNumber, int *conectionNumber){
-    string temp="";
-    int k=0;
-    int tempNumber;
-    for (int i = 0; i < (int)line.size(); i++){
-        if(line[i] != ' ' ){
-            temp += line[i];
-        }else{
-            tempNumber = stoi(temp) ;
-            adj[poss][k] = tempNumber;
-            conectionNumber[k] +=1;
-            adjNumber[tempNumber] +=1;
-            k++;
-            temp = "";
+    int *numAdj = (int *) malloc(sizeof(int) * vertices+1);
+    int *numSaida = (int *) malloc(sizeof(int) * vertices+1);
+    int **Adj = (int **) malloc(sizeof(int*) * vertices+1);
+    for(int i = 1; i <= vertices; i++){
+        Adj[i] = (int *)malloc(vertices+1 * sizeof(int));
+        numAdj[i] =0;
+        numSaida[i] = 0;
+    }
+    for(int i = 1; i <= vertices; i++){
+        getline(&linha,&tamLinha,stdin);
+        int pos = 0;
+        int numLido = 0;
+        int numChars;
+        int lidos = 0;
+    while (sscanf(&linha[pos], " %d %n", &numLido, &numChars) > 0) {
+        pos += numChars;
+        if(strlen(linha) != 0){
+            Adj[i][lidos] = numLido; 
+            lidos+=1;
+            numSaida[i] +=1;
+            numAdj[numLido]+=1; 
+            }
         }
     }
-        tempNumber = stoi(temp) ;
-        adj[poss][k] = tempNumber;
-        adjNumber[tempNumber] +=1;
-        conectionNumber[k] +=1;
-        k++;
-        for (int j = 0; j < k; j++){
-            cout << adj[poss][j] << " ";
+    int *queue = (int *) malloc(sizeof(int) * vertices+1);
+    int pointQueueEnd =0;
+    int pointQueueStart =0;
+
+    for(int i=1;i <= vertices;i++){
+        if(numAdj[i] == 0){
+            queue[pointQueueEnd] = i;
+            pointQueueEnd +=1;
         }
-        cout << endl;
-    return 0;
-}
-
-
-int main(int argc, char const *argv[]){
-    string s;
-    int size, index=0;
-    getline(cin,s);
-    size = s[0] - 48;
-    int **adj = (int **) malloc(sizeof(int*) * size);
-
-    int conectionNumber[size];
-    int adjNumber[size];
-    if(conectionNumber == NULL or adjNumber==NULL or adj==NULL){
-        cout << "ERRO, SEM MEMORIA" << endl;
-        return 1;
     }
-    for(int i=0; i<size;i++){
-        adj[i] = (int *) malloc(sizeof(int) * size);
-        adjNumber[i]= conectionNumber[i] = 0;
-    }
-    
-    while(getline(cin,s)){
-        if(s==""){
-            index++;
-            continue;
+    while(pointQueueStart != pointQueueEnd){
+        int actual = queue[pointQueueStart];
+        cout << actual << " ";
+        for(int k=0; k< numSaida[actual]; k++){
+            int exitFromActual = Adj[actual][k];
+            numAdj[exitFromActual] -=1;
+            if(numAdj[exitFromActual] ==0){
+                queue[pointQueueEnd] = exitFromActual;
+                pointQueueEnd+=1;
+            }
         }
-        splitLine(s, index, adj, adjNumber, conectionNumber);
-        index++;
-    }
-
-    for (int i = 0; i < size; i++){
-        cout << adjNumber[i] << " ";
+        pointQueueStart +=1;
     }
     cout << endl;
-    for (int i = 0; i < size; i++){
-        cout << conectionNumber[i] << " ";
     }
-    cout << endl;
-    return 0;
-}
+
+
+
+
+
+
+
