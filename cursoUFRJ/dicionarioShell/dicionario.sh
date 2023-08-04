@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ $# -eq 0 ]
 then
   echo "Parâmetros precisam ser passados"
@@ -7,19 +7,31 @@ then
   echo "use -r para remover uma palavra do dicionario"
   exit 1
 fi
+
+
 i=$1
-palavras=${@:2}
+palavra=()
+IFS=" "
+p1=($*)
+p2=(${p1[@]:1})
 
 adicionar(){
-  chave=${palavras[@]}
-  valores=("${palavras[@]:1}")
-  echo $chave
-  echo "Array recortado: ${valores[@]}"
-  
-  for p in $palavras
+  p3=(${p2[@]:1})
+  echo "${p3[*]}"
+  chave=${p2[0]}
+  for p in "${p3[@]}"
   do
-    $(echo "$p">>./dicionario.txt)
+    $(echo "$chave:$p" >> dicionario.txt)
   done
+}
+
+procurar(){
+  chave=${p2[0]}
+  results=($(grep ^$chave dicionario.txt | cut -d":" -f2))
+  echo "Aqui está a lista de valores que você possui para essa chave:"
+  echo ""
+  echo "${results[*]}"
+
 
 }
 
@@ -33,3 +45,4 @@ case "$i" in
     *) echo "nada foi feito" 
     ;;
   esac
+
