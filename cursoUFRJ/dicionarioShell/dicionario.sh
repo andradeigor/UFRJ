@@ -30,9 +30,12 @@ procurar(){
   results=($(grep ^$chave dicionario.txt | cut -d":" -f2))
   echo "Aqui está a lista de valores que você possui para essa chave:"
   echo ""
-  echo "${results[*]}"
+  echo "${results[@]}"
+}
 
-
+remover(){
+  chave=${p2[0]}
+  $(grep -v ^$chave dicionario.txt > dicionariotemp.txt | mv dicionariotemp.txt dicionario.txt)
 }
 
 case "$i" in
@@ -40,7 +43,7 @@ case "$i" in
     ;;
     -insert|-i) adicionar 
     ;;
-    -remove|-r) echo 3
+    -remove|-r) remover
     ;;
     *) echo "nada foi feito" 
     ;;
