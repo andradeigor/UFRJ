@@ -3,7 +3,7 @@ if [ $# -eq 0 ]
 then
   echo "Parâmetros precisam ser passados"
   echo "use -s para pesquisar por uma palavra no dicionario"
-  echo "use -i para inserir uma palavra no dicionario"
+  echo "use -i para inserir uma palavra no dicionario, junto com suas chaves. Ex: -i foo bar baz"
   echo "use -r para remover uma palavra do dicionario"
   exit 1
 fi
@@ -27,7 +27,12 @@ adicionar(){
 
 procurar(){
   chave=${p2[0]}
-  results=($(grep ^$chave dicionario.txt | cut -d":" -f2))
+  results=($(grep -w ^$chave dicionario.txt | cut -d":" -f2))
+  if [ ${#results} -eq 0 ]
+  then
+    echo "Não há ocorrências para essa chave."
+    exit 0
+  fi
   echo "Aqui está a lista de valores que você possui para essa chave:"
   echo ""
   echo "${results[@]}"
@@ -45,7 +50,7 @@ case "$i" in
     ;;
     -remove|-r) remover
     ;;
-    *) echo "nada foi feito" 
+    *) echo "argumento inválido" 
     ;;
   esac
 
