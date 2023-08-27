@@ -16,7 +16,7 @@ int VerificaResultado(int numeros[], int verificador[])
   {
     if (numeros[i] != verificador[i])
     {
-      printf("Encontrei um problema com o número na posição %d, ele deveria ser %d, mas é %d.\n", i, numeros[i], verificador[i]);
+      printf("Encontrei um problema com o número na posição %d, ele deveria ser %d, mas é %d.\n", i, verificador[i], numeros[i]);
       return 1;
     }
   }
@@ -62,7 +62,7 @@ int main()
       exit(-1);
     }
     args->inicio = i * gap;
-    args->fim = (i + 1) * gap;
+    args->fim = i + 1 == NTHREADS ? SIZE : (i + 1) * gap;
     args->numeros = numeros;
 
     printf("Criando a thread %d, ela vai cuidar de [%4d-%5d[\n", i, i * gap, (i + 1) * gap);
