@@ -43,11 +43,12 @@ Aqui preciamos dar mais um "passo" na paralelização, até parecido com a anter
 #define NCPU 8 // Número de exemplo.
 float a[N][N], b[N][N], c[N][N];
 void calculaElementoMatriz(int dim, int inicio, int j, int fim) {
-    int k, soma = 0.0;
+    int k, soma;
     for(i=inicio; i<fim; i++){
         for(j=0; j< dim; j++) {
+            soma = 0.0
             for(k=0; k<dim; k++) {
-            soma = soma + a[i][k] * b[k][j];
+                soma = soma + a[i][k] * b[k][j];
         }
         c[i][j] = soma;
         }
