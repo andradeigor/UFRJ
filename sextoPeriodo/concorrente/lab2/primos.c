@@ -32,16 +32,19 @@ void *tarefa(void *Arg)
 {
     tArgs *Args = (tArgs *)Arg;
     long int total = 0;
+    // realizando o acesso separado de cada item do argumento, faço isso para distribuir igualmente o trabalho entre as threads.
     pthread_mutex_lock(&mutex);
     int i = *(Args->i);
     *(Args->i) = *(Args->i) + 1;
     pthread_mutex_unlock(&mutex);
+    // enquanto eu não estiver no ultimo número, a thread vai continuar rodando o código
     while (i <= N)
     {
         if (ehPrimo(i))
         {
             total++;
         }
+        // pegando o proximo item.
         pthread_mutex_lock(&mutex);
         i = *Args->i;
         *(Args->i) = *(Args->i) + 1;
@@ -55,8 +58,10 @@ int main(int argc, char *argv[])
 {
     pthread_t *tid; // identificadores das threads no sistema
     double delta, fim, inicio;
+    // decidi usar um int para guardar o numero no lugar de um vetor, não vi sentido em criar um vetor de n possíções onde o i representava também o valor do que iria acessar.
     int numero = 1;
     tArgs *Args;
+    // variável que guarda o resultado retornado pela thread
     void *result;
     GET_TIME(inicio);
     if (argc < 3)
@@ -97,7 +102,7 @@ int main(int argc, char *argv[])
             return 3;
         }
     }
-    // espera pelo termino da threads
+    // espera pelo termino da threads e somando o resultado.
     for (int i = 0; i < nthreads; i++)
     {
         pthread_join(*(tid + i), &result);

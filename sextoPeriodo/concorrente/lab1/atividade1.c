@@ -40,6 +40,7 @@ int main()
 {
   pthread_t tid_sistema[NTHREADS];
   t_Args *args;
+
   int *numeros, *verificador, gap = SIZE / NTHREADS;
   numeros = malloc(sizeof(int) * SIZE);
   verificador = malloc(sizeof(int) * SIZE);
@@ -48,6 +49,7 @@ int main()
     printf("--ERRO: malloc()\n");
     exit(-1);
   }
+  // inicializando os vetores de números e o de respostas juntos
   for (int i = 0; i < SIZE; i++)
   {
     numeros[i] = i;
@@ -62,6 +64,7 @@ int main()
       exit(-1);
     }
     args->inicio = i * gap;
+    // calculando até onde cada thread vai, em caso de estarmos na ultima thread ela vai até o final do vetor.
     args->fim = i + 1 == NTHREADS ? SIZE : (i + 1) * gap;
     args->numeros = numeros;
 
