@@ -3,9 +3,10 @@
 #include <pthread.h>
 #include <string.h>
 #include <semaphore.h>
+#include <unistd.h>
 
-#define N 100 // numero de elementos no meu buffer
-#define tamLinha 10000
+#define N 3 // numero de elementos no meu buffer
+#define tamLinha 1000
 // Variaveis globais
 sem_t slotCheio, slotVazio; // semaforos para sincronizacao por condicao
 sem_t mutexGeral;           // semaforo geral de sincronizacao por exclusao mutua
@@ -13,25 +14,37 @@ sem_t mutexGeral;           // semaforo geral de sincronizacao por exclusao mutu
 // buffer
 char Buffer[N][tamLinha];
 
-void Retira()
+void printaBuffer()
+{
+    printf("Buffer: ");
+    for (int i = 0; i < N; i++)
+    {
+        printf("%s ", Buffer[i]);
+    }
+    printf("\n");
+}
+
+void Retira(long int id)
 {
     char aux[tamLinha];
     static int linhaRetirar = 0;
     sem_wait(&slotCheio);
     sem_wait(&mutexGeral);
-    strcpy(aux, Buffer[linhaRetirar]);
-    Buffer[linhaRetirar][0] = '\0';
+    strcpy(aux, Buffer[linhaRetirar]); // pega o valor do buffer e coloca numa variável auxiliar.
+    Buffer[linhaRetirar][0] = '\0';    // reseta a posição do buffer, colocando um string "vazia".
     linhaRetirar = (linhaRetirar + 1) % N;
-    printf("Cons[]: retirou %s\n", aux);
+    printf("Cons[%ld]: Consumiu: %s\n", id, aux);
     sem_post(&mutexGeral);
     sem_post(&slotVazio);
 }
 
 void *consumidora(void *arg)
 {
+    long int id = (long int)arg;
+    printf("A thread %ld foi criada\n", id);
     while (1)
     {
-        Retira();
+        Retira(id);
     }
     pthread_exit(NULL);
 }
@@ -64,7 +77,6 @@ int main(int argc, char const *argv[])
     }
     // copia o nome do arquivo para a variável
     strcpy(nomeArquivo, argv[2]);
-    printf("%s\n", nomeArquivo);
     // aloca espaco de memoria para o vetor de identificadores de threads no sistema
     tid = malloc(sizeof(pthread_t) * nthreads);
     if (tid == NULL)
@@ -75,7 +87,7 @@ int main(int argc, char const *argv[])
 
     for (long int i = 0; i < nthreads; i++)
     {
-        if (pthread_create(&tid[i], NULL, consumidora, (void *)i))
+        if (pthread_create(&tid[i], NULL, consumidora, (void *)(i + 1)))
         {
             printf("Erro na criacao do thread consumidora\n");
             exit(1);
@@ -92,25 +104,33 @@ int main(int argc, char const *argv[])
     {
         sem_wait(&slotVazio);
         sem_wait(&mutexGeral);
+        // carrega a proxima linha no Buffer, na linha correta e verifica se chegou ao final do arquivo.
         if (fgets(Buffer[linha], sizeof(char) * tamLinha, arquivo) == NULL)
         {
+            // sai do loop se estiver no final e libera o ponteiro de lock, mas não sinaliza um slot cheio pois chegou ao fim.
             fimDoLoop = 1;
+            sem_post(&mutexGeral);
             continue;
         }
-        printf("Prod: inseriu %s", Buffer[linha]);
+        for (int i = 0; i < tamLinha; i++)
+        {
+            if (Buffer[linha][i] == '\n')
+            {
+                Buffer[linha][i] = '\0';
+                break;
+            }
+        }
+        printf("Prod: inseriu %s\n", Buffer[linha]);
         linha = (linha + 1) % N;
         sem_post(&mutexGeral);
         sem_post(&slotCheio);
     }
-    int i = 0;
-    while (i < 3)
-    {
-        for (int k = 0; k < linha; k++)
-        {
-            puts(Buffer[k]);
-        }
-        sleep(1);
-    }
+    // esperando o consumidor acabar.
+    sem_wait(&slotVazio);
+
+    sem_destroy(&slotCheio);
+    sem_destroy(&slotVazio);
+    sem_destroy(&mutexGeral);
     fclose(arquivo);
     free(tid);
     free(nomeArquivo);
