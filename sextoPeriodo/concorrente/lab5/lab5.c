@@ -14,6 +14,9 @@ sem_t mutexGeral;           // semaforo geral de sincronizacao por exclusao mutu
 // buffer
 char Buffer[N][tamLinha];
 
+// variavel de espera
+int nitems = 0;
+
 void printaBuffer()
 {
     printf("Buffer: ");
@@ -34,6 +37,7 @@ void Retira(long int id)
     Buffer[linhaRetirar][0] = '\0';    // reseta a posição do buffer, colocando um string "vazia".
     linhaRetirar = (linhaRetirar + 1) % N;
     printf("Cons[%ld]: Consumiu: %s\n", id, aux);
+    nitems--;
     sem_post(&mutexGeral);
     sem_post(&slotVazio);
 }
@@ -45,7 +49,7 @@ void *consumidora(void *arg)
     while (1)
     {
         Retira(id);
-    }
+        }
     pthread_exit(NULL);
 }
 
@@ -104,7 +108,7 @@ int main(int argc, char const *argv[])
     {
         sem_wait(&slotVazio);
         sem_wait(&mutexGeral);
-        // carrega a proxima linha no Buffer, na linha correta e verifica se chegou ao final do arquivo.
+        // carrega a proxima linha no Buffer e verifica se chegou ao final do arquivo.
         if (fgets(Buffer[linha], sizeof(char) * tamLinha, arquivo) == NULL)
         {
             // sai do loop se estiver no final e libera o ponteiro de lock, mas não sinaliza um slot cheio pois chegou ao fim.
@@ -112,8 +116,10 @@ int main(int argc, char const *argv[])
             sem_post(&mutexGeral);
             continue;
         }
+        nitems++;
         for (int i = 0; i < tamLinha; i++)
         {
+            // Retira o pular linha e substitui com um "fim de string"
             if (Buffer[linha][i] == '\n')
             {
                 Buffer[linha][i] = '\0';
@@ -127,7 +133,9 @@ int main(int argc, char const *argv[])
     }
     // esperando o consumidor acabar.
     sem_wait(&slotVazio);
-
+    while (nitems != 0)
+    {
+    }
     sem_destroy(&slotCheio);
     sem_destroy(&slotVazio);
     sem_destroy(&mutexGeral);
