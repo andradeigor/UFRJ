@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #define N 3 // numero de elementos no meu buffer
-#define tamLinha 1000
+#define tamLinha 1000 // Tamanho máximo da linha
 // Variaveis globais
 sem_t slotCheio, slotVazio; // semaforos para sincronizacao por condicao
 sem_t mutexGeral;           // semaforo geral de sincronizacao por exclusao mutua
@@ -17,14 +17,19 @@ char Buffer[N][tamLinha];
 // variavel de espera
 int nitems = 0;
 
-void printaBuffer()
-{
-    printf("Buffer: ");
-    for (int i = 0; i < N; i++)
-    {
-        printf("%s ", Buffer[i]);
-    }
-    printf("\n");
+void Insere(char *linha){
+    static int linhaColocar = 0;
+    sem_wait(&slotVazio);
+    sem_wait(&mutexGeral);
+    // carrega a proxima linha no Buffer
+    strcpy(Buffer[linhaColocar], linha);
+    nitems++;
+    printf("Prod: inseriu %s\n", Buffer[linhaColocar]);
+    //avança para a proxima linha
+    linhaColocar = (linhaColocar + 1) % N;
+    sem_post(&mutexGeral);
+    sem_post(&slotCheio);
+
 }
 
 void Retira(long int id)
@@ -34,7 +39,6 @@ void Retira(long int id)
     sem_wait(&slotCheio);
     sem_wait(&mutexGeral);
     strcpy(aux, Buffer[linhaRetirar]); // pega o valor do buffer e coloca numa variável auxiliar.
-    Buffer[linhaRetirar][0] = '\0';    // reseta a posição do buffer, colocando um string "vazia".
     linhaRetirar = (linhaRetirar + 1) % N;
     printf("Cons[%ld]: Consumiu: %s\n", id, aux);
     nitems--;
@@ -49,16 +53,17 @@ void *consumidora(void *arg)
     while (1)
     {
         Retira(id);
-        }
+        
+    }
     pthread_exit(NULL);
 }
 
 int main(int argc, char const *argv[])
 {
-    int nthreads, linha = 0, fimDoLoop = 0;
+    int nthreads;
     pthread_t *tid;
     FILE *arquivo;
-    char *nomeArquivo;
+    char linhaAuxiliar[tamLinha];
     // Iniciando os semaforos
     sem_init(&mutexGeral, 0, 1);
     sem_init(&slotCheio, 0, 0);
@@ -71,24 +76,22 @@ int main(int argc, char const *argv[])
         return 1;
     }
     nthreads = atoi(argv[1]);
-    // reserva o tamanho para o nome do arquivo
-    nomeArquivo = malloc(strlen(argv[2]) + 1);
 
-    if (nomeArquivo == NULL)
+    // Tentar abrir o arquivo, caso não consiga já encerra.
+    arquivo = fopen(argv[2], "r");
+    if (arquivo == NULL)
     {
-        printf("--ERRO: malloc()\n");
-        return 1;
+        printf("--ERRO: ao ler o arquivo\n");
+        return 2;
     }
-    // copia o nome do arquivo para a variável
-    strcpy(nomeArquivo, argv[2]);
-    // aloca espaco de memoria para o vetor de identificadores de threads no sistema
+    // aloca espaco de memoria para o vetor de identificadores de threads no sistema.
     tid = malloc(sizeof(pthread_t) * nthreads);
     if (tid == NULL)
     {
         printf("--ERRO: malloc()\n");
         return 2;
     }
-
+    //cria as n threads, passando um id para cada uma.
     for (long int i = 0; i < nthreads; i++)
     {
         if (pthread_create(&tid[i], NULL, consumidora, (void *)(i + 1)))
@@ -97,50 +100,30 @@ int main(int argc, char const *argv[])
             exit(1);
         }
     }
-
-    arquivo = fopen(nomeArquivo, "r");
-    if (arquivo == NULL)
+    //Enquanto tivermos uma linha no arquivo, lemos a linha.
+    while (fgets(linhaAuxiliar, sizeof(char) * tamLinha, arquivo) != NULL)
     {
-        printf("--ERRO: arquivo\n");
-        return 2;
-    }
-    while (fimDoLoop == 0)
-    {
-        sem_wait(&slotVazio);
-        sem_wait(&mutexGeral);
-        // carrega a proxima linha no Buffer e verifica se chegou ao final do arquivo.
-        if (fgets(Buffer[linha], sizeof(char) * tamLinha, arquivo) == NULL)
-        {
-            // sai do loop se estiver no final e libera o ponteiro de lock, mas não sinaliza um slot cheio pois chegou ao fim.
-            fimDoLoop = 1;
-            sem_post(&mutexGeral);
-            continue;
-        }
-        nitems++;
         for (int i = 0; i < tamLinha; i++)
         {
             // Retira o pular linha e substitui com um "fim de string"
-            if (Buffer[linha][i] == '\n')
+            if (linhaAuxiliar[i] == '\n')
             {
-                Buffer[linha][i] = '\0';
+                linhaAuxiliar[i] = '\0';
                 break;
             }
         }
-        printf("Prod: inseriu %s\n", Buffer[linha]);
-        linha = (linha + 1) % N;
-        sem_post(&mutexGeral);
-        sem_post(&slotCheio);
+        //Chama a função de inserir
+        Insere(linhaAuxiliar);
+        
     }
     // esperando o consumidor acabar.
-    sem_wait(&slotVazio);
-    while (nitems != 0)
-    {
+    while(nitems>0){
     }
+    //destroindo os semáforos e liberando a memória
     sem_destroy(&slotCheio);
     sem_destroy(&slotVazio);
     sem_destroy(&mutexGeral);
     fclose(arquivo);
     free(tid);
-    free(nomeArquivo);
     return 0;
 }
