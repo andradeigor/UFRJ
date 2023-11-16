@@ -1,6 +1,7 @@
 from multiprocessing.pool import Pool
 from multiprocessing import cpu_count
 import time
+import sys  
 from math import sqrt
 #funcao que sera executada de forma concorrente
 def ehPrimo(n):
@@ -13,7 +14,11 @@ def ehPrimo(n):
 
 if __name__ == '__main__':
     start = time.time()
-    N = 1000
+    if(len(sys.argv) <1):
+        print("Digite o numero junto com o programa")
+        sys.exit(0)
+    
+    N = int(sys.argv[1])
     pool = Pool() #por default, cria um processo distinto para cada processador da maquina
     numbers = list(range(1,N+1))
     #map aceita uma funcao e um objeto iteravel, o pool pega cada valor do objeto iteravel e passa para um processo disponivel no poll que aplica a funcao sobre esse valor
