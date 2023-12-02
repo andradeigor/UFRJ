@@ -16,19 +16,6 @@ produto :: Natural -> Natural -> Natural
 produto x Zero    = Zero
 produto x (Suc y) = somar (produto x y) x
 
-data Inteiro where
-  Inteiro :: Natural -> Natural -> Inteiro
-  deriving Eq
-
-instance Show Inteiro where
-    show :: Inteiro -> String
-    show (Inteiro a b) = show a ++ "," ++ show b   
-
-isomar :: Inteiro -> Inteiro ->Inteiro
-isomar (Inteiro x1 y1) (Inteiro x2 y2)  = Inteiro (somar x1 x2) (somar y1 y2)
-
-iproduto :: Inteiro -> Inteiro -> Inteiro 
-iproduto (Inteiro x1 y1) (Inteiro x2 y2) = Inteiro (somar (produto x1 y2) (produto y1 x2)) (somar (produto x1 x2) (produto y1 y2))
 
 class Anel x where
   f :: x->x->x
@@ -47,17 +34,17 @@ instance Anel Natural where
   g :: Natural -> Natural -> Natural
   g = produto
    
-instance Anel Inteiro where
-  z :: Inteiro
-  z = Inteiro Zero Zero
-  u :: Inteiro
-  u = Inteiro Zero (Suc Zero)
-  f :: Inteiro -> Inteiro -> Inteiro
-  f = isomar
-  g :: Inteiro -> Inteiro -> Inteiro
-  g = iproduto
-  i :: Inteiro -> Inteiro
-  i (Inteiro x y) = Inteiro y x 
+instance Anel Integer where
+  z :: Integer
+  z = 0
+  u :: Integer
+  u = 1
+  f :: Integer -> Integer -> Integer
+  f x y= x+y
+  g :: Integer -> Integer -> Integer
+  g x y= x*y
+  i :: Integer -> Integer
+  i x = -x 
 
 data ArvBin a where
   Folha :: ArvBin a 
@@ -75,7 +62,7 @@ data ArvBin2  where
 
 arvParaList :: ArvBin2 -> [Int]
 arvParaList Folha2 = []
-arvParaList (No2 raiz esq dir) = raiz : ((arvParaList esq) ++ (arvParaList dir))
+arvParaList (No2 raiz esq dir) = raiz : arvParaList esq ++ arvParaList dir
 
 isArrumada :: ArvBin2-> Bool
 isArrumada Folha2 = True
@@ -83,3 +70,10 @@ isArrumada (No2 raiz Folha2 Folha2) = True
 isArrumada (No2 raiz esq Folha2) = (raiz >= maximum(arvParaList esq)) && isArrumada esq
 isArrumada (No2 raiz Folha2 dir) = (raiz <= minimum(arvParaList dir)) && isArrumada dir 
 isArrumada (No2 raiz esq dir) = (raiz >= maximum(arvParaList esq)) && (raiz <= minimum(arvParaList dir)) && isArrumada esq && isArrumada dir
+
+
+reverter :: [a] -> [a]
+reverter [] = []
+reverter (x:xs) =  reverter xs ++ [x]
+
+

@@ -25,6 +25,7 @@ toList Clo = [Clo]
 toList (Gun x y) = (toList x) ++ (toList y)
 
 instance Eq Cla where
+  (==) :: Cla -> Cla -> Bool
   Cle == Cle = True
   Cle == _   = False
   Cli == Cli = True

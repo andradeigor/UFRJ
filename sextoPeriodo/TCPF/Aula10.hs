@@ -72,8 +72,8 @@ data ArvBin a where
 --   fmap f (No valor_a arv_esq arv_dir) = No (f valor_a) (fmap f arv_esq) (fmap f arv_dir)
 
 
-t = No 65 (Folha) (No 3 (No 0 Folha Folha) Folha)
-s = No 65 (Folha) (No 3 (No 0 Folha Folha) Folha)
+t = No 65 Folha (No 3 (No 0 Folha Folha) Folha)
+s = No 65 Folha (No 3 (No 0 Folha Folha) Folha)
 u = No "Hugo" Folha Folha
 
 -- exercÃ­cio: definir o tipo dos nÃºmeros naturais!
