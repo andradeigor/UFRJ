@@ -13,6 +13,10 @@ def getMinHandle(numbers, command, prints):
             while(len(numbers)>0 and numbers[0]< int(command[1])):
                 prints.append('removeMin')
                 heappop(numbers)
+            
+        if(len(numbers)>0 and numbers[0]==int(command[1])):
+            prints.append(f'getMin {command[1]}')
+            return numbers,prints
         heappush(numbers, int(command[1]))
         prints.append(f'insert {command[1]}')
         prints.append(f'getMin {command[1]}')

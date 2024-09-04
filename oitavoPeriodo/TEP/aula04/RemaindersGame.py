@@ -17,7 +17,7 @@ numbers = [int(x) for x in input().split(" ")]
 currentLCM = numbers[0]
 for number in numbers:
     currentLCM = gcd(K,lcm(currentLCM, number))
-    if(currentLCM==K):
+    if(pow(currentLCM,1,K)==0):
         possible = True
         break
 
