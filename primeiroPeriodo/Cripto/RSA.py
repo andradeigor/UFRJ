@@ -62,8 +62,10 @@ def teste_Miller_Rabin(n,b):
     
     contador += 1
     if x == 1:
+      #Numero composto!
       return False
     if contador == k:
+      #Numero composto!
       return False
     if x == n-1:
       return True
